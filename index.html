@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Check List Pemastian Kesiapan Pre-Operation - Airport Security</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f0f4f4; 
+        }
+        .form-section {
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+        .section-header {
+            background-color: #3b5d43; /* Forest Green Airport Security */
+            color: white;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            letter-spacing: 0.03em;
+        }
+        .section-body { padding: 1.5rem; }
+        .input-field {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            outline: none;
+            transition: all 0.2s ease-in-out;
+            background-color: #ffffff;
+            font-size: 0.95rem;
+        }
+        .input-field:focus { 
+            border-color: #3b5d43; 
+            box-shadow: 0 0 0 3px rgba(59, 93, 67, 0.15); 
+        }
+        .label-text { 
+            font-weight: 600; 
+            color: #1e293b; 
+            font-size: 0.95rem; 
+            display: block;
+        }
+        .required-star { color: #dc2626; margin-left: 2px; }
+        
+        /* Signature Canvas Pad */
+        .signature-wrapper {
+            position: relative;
+            width: 100%;
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            overflow: hidden;
+            touch-action: none; /* Cegah scroll layar saat menggambar di smartphone */
+        }
+        #signature-pad {
+            display: block;
+            width: 100%;
+            height: 200px;
+            cursor: crosshair;
+        }
+        .rubric-list li { margin-bottom: 0.35rem; font-size: 0.875rem; color: #475569; }
+        .rubric-list strong { color: #1e293b; }
+
+        /* Custom spinner */
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #ffffff;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased pb-16">
+
+    <!-- Header Banner -->
+    <div class="max-w-3xl mx-auto mt-4 px-4 sm:px-0">
+        <div class="w-full rounded-t-xl overflow-hidden shadow-sm bg-gradient-to-r from-[#2f4a35] to-[#3b5d43] border border-gray-200 border-b-0">
+            <img src="https://raw.githubusercontent.com/jolodung/serah.terima/refs/heads/main/WhatsApp%20Image%202026-10-23%20at%2014.32.19.jpeg" 
+                 alt="Banner Kesiapan Tugas" 
+                 class="w-full h-auto object-cover max-h-56"
+                 onerror="this.style.display='none'; document.getElementById('fallback-banner').classList.remove('hidden');">
+            <div id="fallback-banner" class="hidden p-8 text-white text-center">
+                <span class="inline-block px-3 py-1 bg-white/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-2">Airport Security Division</span>
+                <h1 class="text-2xl font-bold tracking-tight">INSPEKSI PRE-OPERATION</h1>
+                <p class="text-sm text-green-100 mt-1">Pemastian Kesiapan Operasional Bandar Udara</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-3xl mx-auto px-4 sm:px-0">
+        
+        <!-- Title Section -->
+        <div class="form-section rounded-t-none border-t-4 border-t-[#3b5d43]">
+            <div class="section-body">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="px-2.5 py-0.5 rounded text-xs font-semibold bg-green-100 text-[#3b5d43]">SOP-AVSEC</span>
+                    <span class="text-xs text-gray-500">KM 39 Tahun 2024 (PKPN)</span>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-3">Check List Pemastian Kesiapan Pre-Operation</h1>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    Check List Pemastian Kesiapan Pre-Operation digunakan sebagai instrumen untuk memastikan kesiapan personel, fasilitas, dokumen, dan area kerja sebelum operasional penerbangan dimulai. Hasil pemeriksaan menjadi dasar penetapan kesiapan operasional serta tindak lanjut atas setiap temuan guna menjamin keamanan dan kelancaran operasional bandar udara.
+                </p>
+                <div class="mt-4 pt-4 border-t border-gray-200 flex flex-wrap justify-between items-center text-xs text-gray-500">
+                    <span class="text-red-600 font-semibold flex items-center gap-1">
+                        <span class="text-base leading-none">*</span> Menunjukkan pertanyaan yang wajib diisi
+                    </span>
+                    <span class="text-gray-400">Google Stitch Project #8423347193973236531</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORM START -->
+        <form id="pengawasanForm" class="space-y-4" novalidate>
+            
+            <!-- INFORMASI UMUM -->
+            <div class="form-section">
+                <div class="section-header flex items-center justify-between">
+                    <span>1. Informasi Umum</span>
+                    <span class="text-xs font-normal normal-case opacity-90">Data Pemeriksaan</span>
+                </div>
+                <div class="section-body space-y-5">
+                    <div>
+                        <label class="label-text">POSISI TUGAS <span class="required-star">*</span></label>
+                        <select id="posisiTugasSelect" name="posisiTugas" required class="input-field font-medium text-gray-800" onchange="toggleSections()">
+                            <option value="">-- Pilih Posisi Tugas --</option>
+                            <option value="PSCP">PSCP (Passenger Security Check Point)</option>
+                            <option value="HBSCP">HBSCP (Hold Baggage Security Check Point)</option>
+                            <option value="TSCP">TSCP (Transit Security Check Point)</option>
+                            <option value="ACSCP">ACSCP (Access Control Security Check Point)</option>
+                            <option value="AD">AD (Kedatangan Domestik)</option>
+                            <option value="WP">WP (Walk Patrol)</option>
+                            <option value="PC">PC (Pintu Check In)</option>
+                            <option value="SSCP KEBERANGKATAN">SSCP KEBERANGKATAN (Staff Security Check Point)</option>
+                            <option value="SSCP KEDATANGAN">SSCP KEDATANGAN</option>
+                            <option value="PATROLI">PATROLI (Mobile Patrol)</option>
+                            <option value="CCTV">CCTV (Surveillance Room)</option>
+                        </select>
+                        <p class="text-xs text-gray-500 mt-1">Form fasilitas dan area akan menyesuaikan secara otomatis dengan posisi yang dipilih.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label class="label-text">TANGGAL PENGAWASAN <span class="required-star">*</span></label>
+                            <input type="date" id="inputTanggal" name="tanggal" required class="input-field">
+                        </div>
+                        <div>
+                            <label class="label-text">WAKTU PENGAWASAN <span class="required-star">*</span></label>
+                            <input type="time" id="inputWaktu" name="waktu" required class="input-field">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="label-text">NAMA PERSONEL <span class="required-star">*</span></label>
+                        <input type="text" name="nama" placeholder="Masukkan nama lengkap personel" required class="input-field">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label class="label-text">NIK <span class="required-star">*</span></label>
+                            <input type="text" name="nik" placeholder="Nomor Induk Karyawan" required class="input-field">
+                        </div>
+                        <div>
+                            <label class="label-text">JABATAN <span class="required-star">*</span></label>
+                            <input type="text" name="jabatan" placeholder="Contoh: Senior Officer / Junior Officer" required class="input-field">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KESIAPAN PERSONEL -->
+            <div class="form-section">
+                <div class="section-header flex items-center justify-between">
+                    <span>2. Kesiapan Personel</span>
+                    <span class="text-xs font-normal normal-case opacity-90">10 Indikator Penilaian</span>
+                </div>
+                <div class="section-body bg-gray-50/80 border-b border-gray-200">
+                    <p class="text-xs text-gray-600 mb-3 leading-relaxed">
+                        Kesiapan personel bertujuan memastikan seluruh personel Airport Security yang bertugas telah memenuhi persyaratan administrasi, kompetensi, disiplin, penampilan, serta kesiapan pelayanan sehingga mampu melaksanakan tugas pengamanan secara profesional, aman, dan sesuai prosedur.
+                    </p>
+                    <p class="font-semibold text-xs text-gray-700 uppercase tracking-wide mb-1.5">Rubrik Penilaian:</p>
+                    <ul class="rubric-list list-disc pl-5">
+                        <li><strong>100</strong> : Memenuhi (Indikator terpenuhi sepenuhnya, konsisten tanpa temuan).</li>
+                        <li><strong>75</strong> : Cukup Memenuhi (Terpenuhi dengan temuan minor tidak signifikan).</li>
+                        <li><strong>50</strong> : Kurang Memenuhi (Terpenuhi sebagian, terdapat ketidaksesuaian).</li>
+                        <li><strong>25</strong> : Tidak Memadai (Sebagian besar tidak terpenuhi, berpotensi mengganggu tugas).</li>
+                        <li><strong>0</strong> : Tidak Memenuhi (Tidak terpenuhi sama sekali atau tidak dilaksanakan).</li>
+                    </ul>
+                </div>
+                <div class="section-body space-y-5">
+                    <div>
+                        <label class="label-text">1. Kehadiran personel lengkap sesuai plotting <span class="required-star">*</span></label>
+                        <select name="personel1" required class="input-field nilai-personel" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Memenuhi</option>
+                            <option value="75">75 - Cukup Memenuhi</option>
+                            <option value="50">50 - Kurang Memenuhi</option>
+                            <option value="25">25 - Tidak Memadai</option>
+                            <option value="0">0 - Tidak Memenuhi</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">2. Pengenaan Seragam dinas rapi serta atribut lengkap <span class="required-star">*</span></label>
+                        <select name="personel2" required class="input-field nilai-personel" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Memenuhi</option>
+                            <option value="75">75 - Cukup Memenuhi</option>
+                            <option value="50">50 - Kurang Memenuhi</option>
+                            <option value="25">25 - Tidak Memadai</option>
+                            <option value="0">0 - Tidak Memenuhi</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">3. ID Card dan pas bandara digunakan <span class="required-star">*</span></label>
+                        <select name="personel3" required class="input-field nilai-personel" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Memenuhi</option>
+                            <option value="75">75 - Cukup Memenuhi</option>
+                            <option value="50">50 - Kurang Memenuhi</option>
+                            <option value="25">25 - Tidak Memadai</option>
+                            <option value="0">0 - Tidak Memenuhi</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">4. Membawa SKP sesuai kompetensi <span class="required-star">*</span></label>
+                        <select name="personel4" required class="input-field nilai-personel" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Memenuhi</option>
+                            <option value="75">75 - Cukup Memenuhi</option>
+                            <option value="50">50 - Kurang Memenuhi</option>
+                            <option value="25">25 - Tidak Memadai</option>
+                            <option value="0">0 - Tidak Memenuhi</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">5. Tidak menggunakan HP, earphone/headset di area pelayanan <span class="required-star">*</span></label>
+                        <select name="personel5" required class="input-field nilai-personel" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Memenuhi</option>
+                            <option value="75">75 - Cukup Memenuhi</option>
+                            <option value="50">50 - Kurang Memenuhi</option>
+                            <option value="25">25 - Tidak Memadai</option>
+                            <option value="0">0 - Tidak Memenuhi</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">6. Tidak makan/minum saat bertugas <span class="required-star">*</span></label>
+                        <select name="personel6" required class="input-field nilai-personel" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Memenuhi</option>
+                            <option value="75">75 - Cukup Memenuhi</option>
+                            <option value="50">50 - Kurang Memenuhi</option>
+                            <option value="25">25 - Tidak Memadai</option>
+                            <option value="0">0 - Tidak Memenuhi</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">7. Personel standby di posisi tugas, tidak duduk santai/berselonjor <span class="required-star">*</span></label>
+                        <select name="personel7" required class="input-field nilai-personel" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Memenuhi</option>
+                            <option value="75">75 - Cukup Memenuhi</option>
+                            <option value="50">50 - Kurang Memenuhi</option>
+                            <option value="25">25 - Tidak Memadai</option>
+                            <option value="0">0 - Tidak Memenuhi</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">8. Sikap dan ekspresi ramah dengan senyum <span class="required-star">*</span></label>
+                        <select name="personel8" required class="input-field nilai-personel" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Memenuhi</option>
+                            <option value="75">75 - Cukup Memenuhi</option>
+                            <option value="50">50 - Kurang Memenuhi</option>
+                            <option value="25">25 - Tidak Memadai</option>
+                            <option value="0">0 - Tidak Memenuhi</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">9. Tidak mengobrol berlebihan di area tugas <span class="required-star">*</span></label>
+                        <select name="personel9" required class="input-field nilai-personel" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Memenuhi</option>
+                            <option value="75">75 - Cukup Memenuhi</option>
+                            <option value="50">50 - Kurang Memenuhi</option>
+                            <option value="25">25 - Tidak Memadai</option>
+                            <option value="0">0 - Tidak Memenuhi</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">10. Briefing pelayanan dan keamanan telah dilakukan <span class="required-star">*</span></label>
+                        <select name="personel10" required class="input-field nilai-personel" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Memenuhi</option>
+                            <option value="75">75 - Cukup Memenuhi</option>
+                            <option value="50">50 - Kurang Memenuhi</option>
+                            <option value="25">25 - Tidak Memadai</option>
+                            <option value="0">0 - Tidak Memenuhi</option>
+                        </select>
+                    </div>
+                    
+                    <!-- STATUS PERSONEL TIDAK MASUK / ABSEN -->
+                    <div class="mt-6 pt-5 border-t border-gray-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="label-text flex items-center gap-1.5">
+                                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                <span>Personel Tidak Hadir / Absen</span>
+                            </label>
+                            <span class="text-[11px] text-gray-500 italic">Opsional (isi bila ada)</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-3">Catat nama petugas shift yang tidak hadir saat pelaksanaan tugas jaga beserta alasannya.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs font-semibold text-gray-700 block mb-1">Nama Petugas yang Tidak Masuk</label>
+                                <input type="text" name="petugasTidakMasuk" placeholder="Contoh: Budi Pratama, Siti Aminah" class="input-field text-sm">
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-gray-700 block mb-1">Keterangan / Alasan Tidak Masuk</label>
+                                <select name="keteranganTidakMasuk" class="input-field text-sm">
+                                    <option value="">-- Pilih Keterangan --</option>
+                                    <option value="Sakit">Sakit (Ada Surat Dokter)</option>
+                                    <option value="Sakit Tanpa Keterangan Dokter">Sakit (Tanpa Surat Dokter)</option>
+                                    <option value="Izin">Izin Keperluan Mendesak</option>
+                                    <option value="Cuti">Cuti Tahunan / Alasan Penting</option>
+                                    <option value="Alpa / Tanpa Keterangan">Alpa / Tanpa Keterangan</option>
+                                    <option value="Dinas Luar / Diklat">Dinas Luar / Diklat / Pelatihan</option>
+                                    <option value="Lainnya">Lainnya (Jelaskan di catatan)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CATATAN PETUGAS -->
+                    <div class="mt-4">
+                        <label class="text-xs font-semibold text-gray-700 block mb-1 flex items-center justify-between">
+                            <span>Catatan Petugas / Temuan Personel</span>
+                            <span class="text-[11px] font-normal text-gray-400">Opsional</span>
+                        </label>
+                        <textarea name="catatanPetugas" rows="2" placeholder="Catatan pengawasan terkait kedisiplinan, materi briefing, kelengkapan seragam, atau koordinasi personel..." class="input-field text-sm"></textarea>
+                    </div>
+
+                    <!-- Hasil Kalkulasi Kesiapan Personel -->
+                    <div class="bg-[#eef2ef] p-4 rounded-lg flex justify-between items-center border border-[#c3d1c8]">
+                        <div>
+                            <span class="block text-xs text-gray-500 uppercase tracking-wide">Total Skor Personel</span>
+                            <span class="text-lg font-bold text-gray-800" id="totalPersonelText">0</span>
+                            <span class="text-xs text-gray-500"> / 1000</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-xs text-gray-500 uppercase tracking-wide">Rata-rata Personel</span>
+                            <span class="text-2xl font-extrabold text-[#3b5d43]" id="rataPersonelText">0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KESIAPAN FASILITAS -->
+            <div class="form-section">
+                <div class="section-header flex items-center justify-between">
+                    <span>3. Kesiapan Fasilitas</span>
+                    <span id="badgeFasilitasInfo" class="text-xs font-normal normal-case opacity-90">Sesuai Posisi</span>
+                </div>
+                <div class="section-body bg-gray-50/80 border-b border-gray-200">
+                    <p class="text-xs text-gray-600 mb-3 leading-relaxed">
+                        Kesiapan fasilitas bertujuan memastikan seluruh peralatan, sistem, dan sarana pendukung keamanan penerbangan berada dalam kondisi laik fungsi, siap digunakan, dan mendukung pelaksanaan operasional secara aman, efektif, dan sesuai ketentuan.
+                    </p>
+                    <p class="font-semibold text-xs text-gray-700 uppercase tracking-wide mb-1.5">Rubrik Penilaian:</p>
+                    <ul class="rubric-list list-disc pl-5">
+                        <li><strong>100</strong> : Dilaksanakan Sepenuhnya (Lengkap sesuai SOP, tepat waktu, terdokumentasi).</li>
+                        <li><strong>75</strong> : Dilaksanakan dgn Catatan (Kekurangan minor tidak mempengaruhi fungsi).</li>
+                        <li><strong>50</strong> : Dilaksanakan Sebagian (Sebagian item / tidak sepenuhnya sesuai SOP).</li>
+                        <li><strong>25</strong> : Tidak Konsisten (Terbatas pada sebagian kecil item).</li>
+                        <li><strong>0</strong> : Tidak Dilaksanakan (Tidak ada pengujian / tidak laik fungsi).</li>
+                    </ul>
+                </div>
+                <div class="section-body space-y-5">
+                    
+                    <!-- 1. Fasilitas Standard (PSCP, HBSCP, TSCP, ACSCP, SSCP) -->
+                    <div id="fasilitas-standard" class="space-y-5">
+                        <div>
+                            <label class="label-text">1. Pengujian kelaikan fungsi mesin X-Ray (daily check) <span class="required-star">*</span></label>
+                            <select name="fasilitas1" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-text">2. Pengujian kelaikan fungsi Walk Through Metal Detector (daily check) <span class="required-star">*</span></label>
+                            <select name="fasilitas2" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div id="div-fasilitas-etd">
+                            <label class="label-text">3. Pengujian fungsi Explosive Trace Detector (ETD) <span class="required-star">*</span></label>
+                            <select id="select-fasilitas-etd" name="fasilitas3" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-text">4. Pengujian fungsi Hand Held Metal Detector (HHMD) <span class="required-star">*</span></label>
+                            <select name="fasilitas4" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-text">5. Pengujian kamera CCTV dan sistem perekaman <span class="required-star">*</span></label>
+                            <select name="fasilitas5" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-text">6. Pengujian sistem peringatan darurat keamanan (Alarm) <span class="required-star">*</span></label>
+                            <select name="fasilitas6" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-text">7. Pemastian ketersediaan dan kelaikan peralatan pendukung keamanan <span class="required-star">*</span></label>
+                            <select name="fasilitas8" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-text">8. Pemastian ketersediaan Informasi Budaya Keamanan (Security Culture) <span class="required-star">*</span></label>
+                            <select name="fasilitas9" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-text">9. Pemastian ketersediaan hand glove (sarung tangan) pemeriksaan <span class="required-star">*</span></label>
+                            <select name="fasilitas10" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 2. Fasilitas Khusus Pos AD, WP, PC -->
+                    <div id="fasilitas-khusus" class="space-y-5 hidden">
+                        <div>
+                            <label class="label-text">1. Pengujian fungsi Handy Talkie (HT) komunikasi pos <span class="required-star">*</span></label>
+                            <select name="fasilitas_ht" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- 3. Fasilitas Pos PATROLI -->
+                    <div id="fasilitas-patroli" class="space-y-5 hidden">
+                        <div>
+                            <label class="label-text">1. Pengujian fungsi HT Patroli <span class="required-star">*</span></label>
+                            <select name="fasilitas_patroli1" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-text">2. Pengujian fungsi Radio Base Patroli <span class="required-star">*</span></label>
+                            <select name="fasilitas_patroli2" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-text">3. Fungsi Sirine Kendaraan <span class="required-star">*</span></label>
+                            <select name="fasilitas_patroli3" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-text">4. Fungsi Lampu Rotator <span class="required-star">*</span></label>
+                            <select name="fasilitas_patroli4" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-text">5. Kesiapan & Kelaikan Kendaraan Patroli <span class="required-star">*</span></label>
+                            <select name="fasilitas_patroli5" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- 4. Fasilitas Pos CCTV -->
+                    <div id="fasilitas-cctv" class="space-y-5 hidden">
+                        <div>
+                            <label class="label-text">1. Fungsi Komunikasi HT Ruang CCTV <span class="required-star">*</span></label>
+                            <select name="fasilitas_cctv1" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-text">2. Fungsi Pemantauan CCTV Landside <span class="required-star">*</span></label>
+                            <select name="fasilitas_cctv2" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-text">3. Fungsi Pemantauan CCTV Perimeter <span class="required-star">*</span></label>
+                            <select name="fasilitas_cctv3" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-text">4. Fungsi Pemantauan CCTV Airside <span class="required-star">*</span></label>
+                            <select name="fasilitas_cctv4" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-text">5. Fungsi Pemantauan CCTV Terminal Lantai 1 <span class="required-star">*</span></label>
+                            <select name="fasilitas_cctv5" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="label-text">6. Fungsi Pemantauan CCTV Terminal Lantai 2 <span class="required-star">*</span></label>
+                            <select name="fasilitas_cctv6" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
+                                <option value="">-- Pilih Nilai --</option>
+                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
+                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
+                                <option value="50">50 - Dilaksanakan Sebagian</option>
+                                <option value="25">25 - Tidak Konsisten</option>
+                                <option value="0">0 - Tidak Dilaksanakan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- CATATAN FASILITAS -->
+                    <div class="mt-6 pt-5 border-t border-gray-200">
+                        <label class="text-xs font-semibold text-gray-700 block mb-1 flex items-center justify-between">
+                            <span class="flex items-center gap-1.5">
+                                <svg class="w-4 h-4 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                                <span>Catatan Fasilitas / Temuan Kerusakan Peralatan</span>
+                            </span>
+                            <span class="text-[11px] font-normal text-gray-400">Opsional</span>
+                        </label>
+                        <textarea name="catatanFasilitas" rows="2" placeholder="Tuliskan temuan kendala alat (misal: Mesin X-Ray PSCP 1 layar bergaris, sensitivitas WTMD perlu kalibrasi, HT channel 2 kresek-kresek, koordinasi teknisi)..." class="input-field text-sm"></textarea>
+                    </div>
+                    
+                    <!-- Hasil Kalkulasi Kesiapan Fasilitas -->
+                    <div class="bg-[#eef2ef] p-4 rounded-lg flex justify-between items-center border border-[#c3d1c8]">
+                        <div>
+                            <span class="block text-xs text-gray-500 uppercase tracking-wide">Total Skor Fasilitas</span>
+                            <span class="text-lg font-bold text-gray-800" id="totalFasilitasText">0</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-xs text-gray-500 uppercase tracking-wide">Rata-rata Fasilitas</span>
+                            <span class="text-2xl font-extrabold text-[#3b5d43]" id="rataFasilitasText">0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KESIAPAN DOKUMEN (Disembunyikan untuk AD, WP, PC, PATROLI, CCTV) -->
+            <div id="section-dokumen" class="form-section">
+                <div class="section-header flex items-center justify-between">
+                    <span>4. Kesiapan Dokumen</span>
+                    <span class="text-xs font-normal normal-case opacity-90">3 Indikator Penilaian</span>
+                </div>
+                <div class="section-body bg-gray-50/80 border-b border-gray-200">
+                    <p class="text-xs text-gray-600 mb-3 leading-relaxed">
+                        Kesiapan dokumen bertujuan memastikan seluruh dokumen operasional yang diperlukan tersedia, mutakhir, mudah diakses, dan siap digunakan.
+                    </p>
+                    <p class="font-semibold text-xs text-gray-700 uppercase tracking-wide mb-1.5">Rubrik Penilaian:</p>
+                    <ul class="rubric-list list-disc pl-5">
+                        <li><strong>100</strong> : Tersedia Lengkap</li>
+                        <li><strong>75</strong> : Tersedia dengan Catatan Minor</li>
+                        <li><strong>50</strong> : Tersedia Sebagian</li>
+                        <li><strong>25</strong> : Tersedia Terbatas</li>
+                        <li><strong>0</strong> : Tidak Tersedia</li>
+                    </ul>
+                </div>
+                <div class="section-body space-y-5">
+                    <div>
+                        <label class="label-text">1. Ketersediaan Salinan SOP di masing-masing working station <span class="required-star">*</span></label>
+                        <select name="dokumen1" required class="input-field nilai-dokumen" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Tersedia Lengkap</option>
+                            <option value="75">75 - Tersedia dengan Catatan</option>
+                            <option value="50">50 - Tersedia Sebagian</option>
+                            <option value="25">25 - Tersedia Terbatas</option>
+                            <option value="0">0 - Tidak Tersedia</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">2. Ketersediaan Daftar prohibited items terbaru & jelas terbaca <span class="required-star">*</span></label>
+                        <select name="dokumen2" required class="input-field nilai-dokumen" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Tersedia Lengkap</option>
+                            <option value="75">75 - Tersedia dengan Catatan</option>
+                            <option value="50">50 - Tersedia Sebagian</option>
+                            <option value="25">25 - Tersedia Terbatas</option>
+                            <option value="0">0 - Tidak Tersedia</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">3. Ketersediaan Log book tugas jaga pos <span class="required-star">*</span></label>
+                        <select name="dokumen3" required class="input-field nilai-dokumen" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Tersedia Lengkap</option>
+                            <option value="75">75 - Tersedia dengan Catatan</option>
+                            <option value="50">50 - Tersedia Sebagian</option>
+                            <option value="25">25 - Tersedia Terbatas</option>
+                            <option value="0">0 - Tidak Tersedia</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Hasil Kalkulasi Kesiapan Dokumen -->
+                    <div class="bg-[#eef2ef] p-4 rounded-lg flex justify-between items-center border border-[#c3d1c8]">
+                        <div>
+                            <span class="block text-xs text-gray-500 uppercase tracking-wide">Total Skor Dokumen</span>
+                            <span class="text-lg font-bold text-gray-800" id="totalDokumenText">0</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-xs text-gray-500 uppercase tracking-wide">Rata-rata Dokumen</span>
+                            <span class="text-2xl font-extrabold text-[#3b5d43]" id="rataDokumenText">0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KESIAPAN AREA TUGAS (Disembunyikan untuk AD, WP, PC, PATROLI, CCTV) -->
+            <div id="section-area" class="form-section">
+                <div class="section-header flex items-center justify-between">
+                    <span>5. Kesiapan Area Tugas</span>
+                    <span class="text-xs font-normal normal-case opacity-90">4 Indikator Penilaian</span>
+                </div>
+                <div class="section-body bg-gray-50/80 border-b border-gray-200">
+                    <p class="text-xs text-gray-600 mb-3 leading-relaxed">
+                        Kesiapan area tugas bertujuan memastikan seluruh area kerja Airport Security berada dalam kondisi aman, tertib, bersih, dan siap digunakan sesuai perimeter steril.
+                    </p>
+                    <p class="font-semibold text-xs text-gray-700 uppercase tracking-wide mb-1.5">Rubrik Penilaian:</p>
+                    <ul class="rubric-list list-disc pl-5">
+                        <li><strong>100</strong> : Memenuhi (Tidak ditemukan ketidaksesuaian).</li>
+                        <li><strong>75</strong> : Memenuhi dgn Temuan Minor.</li>
+                        <li><strong>50</strong> : Memenuhi Sebagian.</li>
+                        <li><strong>25</strong> : Kurang Memenuhi.</li>
+                        <li><strong>0</strong> : Tidak Memenuhi.</li>
+                    </ul>
+                </div>
+                <div class="section-body space-y-5">
+                    <div>
+                        <label class="label-text">1. Area steril bebas dari Prohibited Item <span class="required-star">*</span></label>
+                        <select name="area1" required class="input-field nilai-area" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Memenuhi</option>
+                            <option value="75">75 - Memenuhi dgn Temuan Minor</option>
+                            <option value="50">50 - Memenuhi Sebagian</option>
+                            <option value="25">25 - Kurang Memenuhi</option>
+                            <option value="0">0 - Tidak Memenuhi</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">2. Jalur evakuasi darurat tidak terhalang <span class="required-star">*</span></label>
+                        <select name="area2" required class="input-field nilai-area" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Memenuhi</option>
+                            <option value="75">75 - Memenuhi dgn Temuan Minor</option>
+                            <option value="50">50 - Memenuhi Sebagian</option>
+                            <option value="25">25 - Kurang Memenuhi</option>
+                            <option value="0">0 - Tidak Memenuhi</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">3. Rambu dan pembatas antrean (tensabarrier) terpasang baik <span class="required-star">*</span></label>
+                        <select name="area3" required class="input-field nilai-area" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Memenuhi</option>
+                            <option value="75">75 - Memenuhi dgn Temuan Minor</option>
+                            <option value="50">50 - Memenuhi Sebagian</option>
+                            <option value="25">25 - Kurang Memenuhi</option>
+                            <option value="0">0 - Tidak Memenuhi</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="label-text">4. Kebersihan dan kerapian working station pos jaga <span class="required-star">*</span></label>
+                        <select name="area4" required class="input-field nilai-area" onchange="hitungTotal()">
+                            <option value="">-- Pilih Nilai --</option>
+                            <option value="100">100 - Memenuhi</option>
+                            <option value="75">75 - Memenuhi dgn Temuan Minor</option>
+                            <option value="50">50 - Memenuhi Sebagian</option>
+                            <option value="25">25 - Kurang Memenuhi</option>
+                            <option value="0">0 - Tidak Memenuhi</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Hasil Kalkulasi Kesiapan Area -->
+                    <div class="bg-[#eef2ef] p-4 rounded-lg flex justify-between items-center border border-[#c3d1c8]">
+                        <div>
+                            <span class="block text-xs text-gray-500 uppercase tracking-wide">Total Skor Area</span>
+                            <span class="text-lg font-bold text-gray-800" id="totalAreaText">0</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-xs text-gray-500 uppercase tracking-wide">Rata-rata Area</span>
+                            <span class="text-2xl font-extrabold text-[#3b5d43]" id="rataAreaText">0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HASIL KESELURUHAN -->
+            <div class="form-section p-6 bg-gradient-to-r from-[#2f4a35] to-[#3b5d43] text-white shadow-lg">
+                <div class="flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-4">
+                    <div>
+                        <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white/20 text-green-100 uppercase tracking-wider mb-1">Indeks Kesiapan Operasional</span>
+                        <h2 class="text-xl sm:text-2xl font-extrabold">Rata-rata Kesiapan Keseluruhan</h2>
+                        <p class="text-xs text-green-100 mt-1 max-w-md">Akumulasi rata-rata terbobot dari seluruh kriteria yang dinilai aktif sesuai Posisi Tugas.</p>
+                    </div>
+                    <div class="bg-white text-[#3b5d43] px-6 py-4 rounded-xl shadow-md text-center min-w-[140px]">
+                        <span class="block text-xs font-bold uppercase tracking-wider text-gray-500">Nilai Akhir</span>
+                        <span class="text-3xl sm:text-4xl font-black" id="rataKeseluruhanText">0.00</span>
+                        <span id="badgeStatusKesiapan" class="block text-[11px] font-bold mt-1 text-gray-500">Belum Lengkap</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TANDA TANGAN -->
+            <div class="form-section p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <label class="label-text">TANDA TANGAN PENGAWAS <span class="required-star">*</span></label>
+                    <span id="statusTtd" class="text-xs font-medium text-gray-400">Belum ditandatangani</span>
+                </div>
+                <p class="text-xs text-gray-500 mb-3">Silakan bubuhkan tanda tangan langsung di dalam area kanvas menggunakan jari atau mouse.</p>
+                
+                <div class="signature-wrapper">
+                    <canvas id="signature-pad"></canvas>
+                </div>
+                
+                <div class="flex justify-between items-center mt-3">
+                    <button type="button" id="clear-signature" class="text-xs font-semibold text-red-600 hover:text-red-700 hover:underline flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        Hapus Tanda Tangan
+                    </button>
+                    <span class="text-[11px] text-gray-400 italic">Otomatis tersimpan sebagai berkas PNG di Google Drive</span>
+                </div>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-2">
+                <button type="button" onclick="resetFormHandler()" class="text-sm text-gray-500 hover:text-gray-800 font-medium py-2 px-4 transition-colors">
+                    Kosongkan formulir
+                </button>
+                <button type="submit" id="submitBtn" class="w-full sm:w-auto bg-[#3b5d43] hover:bg-[#2f4a35] text-white px-9 py-3.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                    <span id="btnIcon">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </span>
+                    <span id="btnSpinner" class="spinner hidden"></span>
+                    <span id="btnText">Kirim Data Checklist</span>
+                </button>
+            </div>
+        </form>
+
+        <!-- LAYAR SUKSES -->
+        <div id="successMsg" class="hidden mt-6 p-8 bg-white rounded-2xl border border-green-200 text-center shadow-md">
+            <div class="w-16 h-16 bg-green-100 text-[#3b5d43] rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <h3 class="text-2xl font-extrabold text-gray-900 mb-2">Checklist Berhasil Direkam!</h3>
+            <p class="text-sm text-gray-600 mb-6 max-w-md mx-auto">
+                Data kesiapan pre-operation telah tersimpan di Google Spreadsheet dan berkas tanda tangan telah diarsipkan di Google Drive.
+            </p>
+
+            <div class="bg-gray-50 rounded-xl p-4 max-w-sm mx-auto mb-6 text-left border border-gray-200 text-xs space-y-2">
+                <div class="flex justify-between"><span class="text-gray-500">Posisi Tugas:</span> <span class="font-bold text-gray-800" id="succPosisi">-</span></div>
+                <div class="flex justify-between"><span class="text-gray-500">Nama Personel:</span> <span class="font-bold text-gray-800" id="succNama">-</span></div>
+                <div class="flex justify-between"><span class="text-gray-500">Rata-rata Kesiapan:</span> <span class="font-extrabold text-[#3b5d43]" id="succSkor">0.00</span></div>
+                <div class="flex justify-between"><span class="text-gray-500">Status Kesiapan:</span> <span class="font-bold text-green-700" id="succStatus">MEMENUHI</span></div>
+            </div>
+
+            <button onclick="resetToNewForm()" class="inline-flex items-center gap-2 bg-[#3b5d43] hover:bg-[#2f4a35] text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                Kirim Tanggapan Baru
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Script Logika Frontend & Backend Connection -->
+    <script>
+        // =========================================================================
+        // URL WEB APP APPS SCRIPT (Jika form di-host di luar Google Apps Script)
+        // Jika berjalan di dalam Google Apps Script (HTMLService), otomatis pakai google.script.run
+        // =========================================================================
+        const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE'; 
+
+        // Inisialisasi Tanggal & Jam Otomatis Saat Buka Halaman
+        window.addEventListener('DOMContentLoaded', () => {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const hh = String(today.getHours()).padStart(2, '0');
+            const min = String(today.getMinutes()).padStart(2, '0');
+
+            const tglEl = document.getElementById('inputTanggal');
+            const wktEl = document.getElementById('inputWaktu');
+            if (tglEl && !tglEl.value) tglEl.value = `${yyyy}-${mm}-${dd}`;
+            if (wktEl && !wktEl.value) wktEl.value = `${hh}:${min}`;
+
+            resizeCanvas();
+        });
+
+        // --- Logika Menampilkan/Menyembunyikan Bagian (AD, WP, PC, PATROLI, CCTV, SSCP, ACSCP) ---
+        function toggleSections() {
+            const posisi = document.getElementById('posisiTugasSelect').value;
+            const isSpecial = ['AD', 'WP', 'PC'].includes(posisi);
+            const isPatroli = posisi === 'PATROLI';
+            const isCctv = posisi === 'CCTV';
+            const isNoEtd = ['SSCP KEDATANGAN', 'SSCP KEBERANGKATAN', 'ACSCP'].includes(posisi);
+
+            const fasStandard = document.getElementById('fasilitas-standard');
+            const fasKhusus = document.getElementById('fasilitas-khusus');
+            const fasPatroli = document.getElementById('fasilitas-patroli');
+            const fasCctv = document.getElementById('fasilitas-cctv');
+            const secDokumen = document.getElementById('section-dokumen');
+            const secArea = document.getElementById('section-area');
+            const badgeFas = document.getElementById('badgeFasilitasInfo');
+
+            // 1. Matikan semua opsi fasilitas
+            [fasStandard, fasKhusus, fasPatroli, fasCctv].forEach(sec => {
+                if(sec) {
+                    sec.classList.add('hidden');
+                    Array.from(sec.querySelectorAll('select')).forEach(el => el.disabled = true);
+                }
+            });
+
+            // 2. Aktifkan fasilitas sesuai Posisi
+            if (isSpecial) {
+                fasKhusus.classList.remove('hidden');
+                Array.from(fasKhusus.querySelectorAll('select')).forEach(el => el.disabled = false);
+                if (badgeFas) badgeFas.innerText = 'Pos Khusus (HT)';
+            } else if (isPatroli) {
+                fasPatroli.classList.remove('hidden');
+                Array.from(fasPatroli.querySelectorAll('select')).forEach(el => el.disabled = false);
+                if (badgeFas) badgeFas.innerText = 'Sarana Patroli (5 Item)';
+            } else if (isCctv) {
+                fasCctv.classList.remove('hidden');
+                Array.from(fasCctv.querySelectorAll('select')).forEach(el => el.disabled = false);
+                if (badgeFas) badgeFas.innerText = 'Sistem CCTV (6 Item)';
+            } else {
+                fasStandard.classList.remove('hidden');
+                Array.from(fasStandard.querySelectorAll('select')).forEach(el => el.disabled = false);
+                
+                const divEtd = document.getElementById('div-fasilitas-etd');
+                const selectEtd = document.getElementById('select-fasilitas-etd');
+                if (isNoEtd) {
+                    divEtd.classList.add('hidden');
+                    selectEtd.disabled = true; // Tidak masuk hitungan
+                    if (badgeFas) badgeFas.innerText = 'Standar Pos Non-ETD (8 Item)';
+                } else {
+                    divEtd.classList.remove('hidden');
+                    selectEtd.disabled = false;
+                    if (badgeFas) badgeFas.innerText = 'Standar Lengkap (9 Item)';
+                }
+            }
+
+            // 3. Sembunyikan Dokumen dan Area untuk AD, WP, PC, PATROLI, dan CCTV
+            if (isSpecial || isPatroli || isCctv) {
+                secDokumen.classList.add('hidden');
+                Array.from(secDokumen.querySelectorAll('select')).forEach(el => el.disabled = true);
+
+                secArea.classList.add('hidden');
+                Array.from(secArea.querySelectorAll('select')).forEach(el => el.disabled = true);
+            } else {
+                secDokumen.classList.remove('hidden');
+                Array.from(secDokumen.querySelectorAll('select')).forEach(el => el.disabled = false);
+
+                secArea.classList.remove('hidden');
+                Array.from(secArea.querySelectorAll('select')).forEach(el => el.disabled = false);
+            }
+            
+            hitungTotal();
+        }
+
+        // --- Logika Perhitungan Nilai Rata-rata ---
+        function hitungTotal() {
+            // Hitung Personel
+            const personelItems = document.querySelectorAll('.nilai-personel:not(:disabled)');
+            let sumPersonel = 0;
+            personelItems.forEach(item => {
+                if(item.value !== "") sumPersonel += parseInt(item.value);
+            });
+            const rataPersonel = personelItems.length > 0 ? (sumPersonel / personelItems.length) : 0;
+            document.getElementById('totalPersonelText').innerText = sumPersonel;
+            document.getElementById('rataPersonelText').innerText = rataPersonel.toFixed(2);
+
+            // Hitung Fasilitas
+            const fasItems = document.querySelectorAll('.nilai-fasilitas:not(:disabled)');
+            let sumFas = 0;
+            fasItems.forEach(item => {
+                if(item.value !== "") sumFas += parseInt(item.value);
+            });
+            const rataFasilitas = fasItems.length > 0 ? (sumFas / fasItems.length) : 0; 
+            document.getElementById('totalFasilitasText').innerText = sumFas;
+            document.getElementById('rataFasilitasText').innerText = rataFasilitas.toFixed(2);
+
+            // Hitung Dokumen
+            const dokItems = document.querySelectorAll('.nilai-dokumen:not(:disabled)');
+            let sumDok = 0;
+            dokItems.forEach(item => {
+                if(item.value !== "") sumDok += parseInt(item.value);
+            });
+            const rataDok = dokItems.length > 0 ? (sumDok / dokItems.length) : 0;
+            document.getElementById('totalDokumenText').innerText = sumDok;
+            document.getElementById('rataDokumenText').innerText = rataDok.toFixed(2);
+
+            // Hitung Area
+            const areaItems = document.querySelectorAll('.nilai-area:not(:disabled)');
+            let sumArea = 0;
+            areaItems.forEach(item => {
+                if(item.value !== "") sumArea += parseInt(item.value);
+            });
+            const rataArea = areaItems.length > 0 ? (sumArea / areaItems.length) : 0;
+            document.getElementById('totalAreaText').innerText = sumArea;
+            document.getElementById('rataAreaText').innerText = rataArea.toFixed(2);
+
+            // Hitung Rata-rata Keseluruhan
+            let totalAverages = 0;
+            let sectionCount = 0;
+            
+            if (personelItems.length > 0) { totalAverages += rataPersonel; sectionCount++; }
+            if (fasItems.length > 0) { totalAverages += rataFasilitas; sectionCount++; }
+            if (dokItems.length > 0) { totalAverages += rataDok; sectionCount++; }
+            if (areaItems.length > 0) { totalAverages += rataArea; sectionCount++; }
+            
+            const rataKeseluruhan = sectionCount > 0 ? (totalAverages / sectionCount) : 0;
+            const formatted = rataKeseluruhan.toFixed(2);
+            document.getElementById('rataKeseluruhanText').innerText = formatted;
+
+            // Update Badge Status
+            const badge = document.getElementById('badgeStatusKesiapan');
+            if (rataKeseluruhan >= 85) {
+                badge.innerText = 'SIAP OPERASIONAL';
+                badge.className = 'block text-[11px] font-bold mt-1 text-green-700';
+            } else if (rataKeseluruhan >= 70) {
+                badge.innerText = 'CATATAN MINOR';
+                badge.className = 'block text-[11px] font-bold mt-1 text-amber-700';
+            } else {
+                badge.innerText = 'TIDAK MEMENUHI';
+                badge.className = 'block text-[11px] font-bold mt-1 text-red-600';
+            }
+        }
+
+        // --- Logika Kanvas Tanda Tangan Digital ---
+        const canvas = document.getElementById('signature-pad');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let isSigned = false;
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            // Rasio DPI layar untuk ketajaman visual di perangkat mobile
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            ctx.lineWidth = 2.2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = '#0f172a';
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        function getCanvasCoordinates(e) {
+            const rect = canvas.getBoundingClientRect();
+            let clientX, clientY;
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            isSigned = true;
+            updateTtdStatus(true);
+            const pos = getCanvasCoordinates(e);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const pos = getCanvasCoordinates(e);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+        }
+
+        function stopDrawing() {
+            if (isDrawing) {
+                isDrawing = false;
+                ctx.closePath();
+            }
+        }
+
+        function clearSignature() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            isSigned = false;
+            updateTtdStatus(false);
+        }
+
+        function updateTtdStatus(signed) {
+            const el = document.getElementById('statusTtd');
+            if (signed) {
+                el.innerText = 'Tanda tangan terisi ✓';
+                el.className = 'text-xs font-semibold text-green-700';
+            } else {
+                el.innerText = 'Belum ditandatangani';
+                el.className = 'text-xs font-medium text-gray-400';
+            }
+        }
+
+        // Mouse Events
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        window.addEventListener('mouseup', stopDrawing);
+
+        // Touch Events (Smartphone / Tablet)
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e); }, { passive: false });
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, { passive: false });
+        canvas.addEventListener('touchend', (e) => { e.preventDefault(); stopDrawing(); }, { passive: false });
+
+        document.getElementById('clear-signature').addEventListener('click', clearSignature);
+
+        // --- Logika Submit Data Formulir ---
+        const form = document.getElementById('pengawasanForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Validasi kelengkapan form bawaan HTML5
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // Validasi Tanda Tangan
+            if (!isSigned) {
+                alert('Tanda tangan pengawas wajib diisi sebelum mengirimkan data!');
+                document.getElementById('signature-pad').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            setSubmittingState(true);
+
+            // Ekstrak nilai formulir
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            // Tambahkan metrik kalkulasi skor & gambar TTD Base64
+            data.totalPersonel = document.getElementById('totalPersonelText').innerText;
+            data.rataPersonel = document.getElementById('rataPersonelText').innerText;
+            data.totalFasilitas = document.getElementById('totalFasilitasText').innerText;
+            data.rataFasilitas = document.getElementById('rataFasilitasText').innerText;
+            data.totalDokumen = document.getElementById('totalDokumenText').innerText;
+            data.rataDokumen = document.getElementById('rataDokumenText').innerText;
+            data.totalArea = document.getElementById('totalAreaText').innerText;
+            data.rataArea = document.getElementById('rataAreaText').innerText;
+            data.rataKeseluruhan = document.getElementById('rataKeseluruhanText').innerText;
+            data.signatureDataUrl = canvas.toDataURL('image/png');
+
+            try {
+                // Skenario 1: Berjalan di dalam lingkungan Google Apps Script Web App
+                if (typeof google !== 'undefined' && google.script && google.script.run) {
+                    google.script.run
+                        .withSuccessHandler((response) => {
+                            if (response && response.success) {
+                                handleSubmissionSuccess(data, response);
+                            } else {
+                                handleSubmissionError(response ? response.message : 'Gagal menyimpan');
+                            }
+                        })
+                        .withFailureHandler((error) => {
+                            handleSubmissionError(error.message || error.toString());
+                        })
+                        .simpanKesiapan(data);
+                    return;
+                }
+
+                // Skenario 2: Berjalan di luar (Standalone Web Page via fetch ke SCRIPT_URL)
+                if (!SCRIPT_URL || SCRIPT_URL.includes('YOUR_GOOGLE_APPS_SCRIPT_URL_HERE')) {
+                    // Mode Demo Lokal / Uji Coba Offline
+                    await new Promise(r => setTimeout(r, 1200));
+                    handleSubmissionSuccess(data, {
+                        success: true,
+                        status: parseFloat(data.rataKeseluruhan) >= 85 ? 'MEMENUHI / SIAP OPERASI' : 'CATATAN'
+                    });
+                    return;
+                }
+
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    handleSubmissionSuccess(data, result);
+                } else {
+                    handleSubmissionError(result.message || 'Terjadi kesalahan pada server Apps Script');
+                }
+
+            } catch (err) {
+                handleSubmissionError('Gagal menghubungkan ke server Google: ' + err.toString());
+            }
+        });
+
+        function setSubmittingState(isSubmitting) {
+            const btn = document.getElementById('submitBtn');
+            const icon = document.getElementById('btnIcon');
+            const spinner = document.getElementById('btnSpinner');
+            const text = document.getElementById('btnText');
+
+            if (isSubmitting) {
+                btn.disabled = true;
+                btn.classList.add('opacity-75', 'cursor-not-allowed');
+                icon.classList.add('hidden');
+                spinner.classList.remove('hidden');
+                text.innerText = 'Menyimpan ke Spreadsheet...';
+            } else {
+                btn.disabled = false;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                icon.classList.remove('hidden');
+                spinner.classList.add('hidden');
+                text.innerText = 'Kirim Data Checklist';
+            }
+        }
+
+        function handleSubmissionSuccess(data, result) {
+            setSubmittingState(false);
+            
+            // Isi rangkuman sukses
+            document.getElementById('succPosisi').innerText = data.posisiTugas || '-';
+            document.getElementById('succNama').innerText = data.nama || '-';
+            document.getElementById('succSkor').innerText = data.rataKeseluruhan || '0.00';
+            document.getElementById('succStatus').innerText = result.status || 'MEMENUHI';
+
+            form.style.display = 'none';
+            document.getElementById('successMsg').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function handleSubmissionError(msg) {
+            setSubmittingState(false);
+            alert('Peringatan: ' + msg);
+        }
+
+        function resetFormHandler() {
+            if (confirm('Apakah Anda yakin ingin mengosongkan seluruh isian formulir?')) {
+                form.reset();
+                clearSignature();
+                toggleSections();
+            }
+        }
+
+        function resetToNewForm() {
+            form.reset();
+            clearSignature();
+            toggleSections();
+            document.getElementById('successMsg').classList.add('hidden');
+            form.style.display = 'block';
+            
+            // Set ulang tanggal & jam saat ini
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const hh = String(today.getHours()).padStart(2, '0');
+            const min = String(today.getMinutes()).padStart(2, '0');
+            document.getElementById('inputTanggal').value = `${yyyy}-${mm}-${dd}`;
+            document.getElementById('inputWaktu').value = `${hh}:${min}`;
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
