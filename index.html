@@ -1,1298 +1,2017 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Check List Pemastian Kesiapan Pre-Operation - Airport Security</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #f0f4f4; 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Visitor - Sistem Perizinan Pas Visitor Bandara</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              800: '#0c4a6e',
+              900: '#082f49',
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
+          }
         }
-        .form-section {
-            background: white;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-        }
-        .section-header {
-            background-color: #3b5d43; /* Forest Green Airport Security */
-            color: white;
-            padding: 1rem 1.5rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.95rem;
-            letter-spacing: 0.03em;
-        }
-        .section-body { padding: 1.5rem; }
-        .input-field {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            margin-top: 0.5rem;
-            outline: none;
-            transition: all 0.2s ease-in-out;
-            background-color: #ffffff;
-            font-size: 0.95rem;
-        }
-        .input-field:focus { 
-            border-color: #3b5d43; 
-            box-shadow: 0 0 0 3px rgba(59, 93, 67, 0.15); 
-        }
-        .label-text { 
-            font-weight: 600; 
-            color: #1e293b; 
-            font-size: 0.95rem; 
-            display: block;
-        }
-        .required-star { color: #dc2626; margin-left: 2px; }
-        
-        /* Signature Canvas Pad */
-        .signature-wrapper {
-            position: relative;
-            width: 100%;
-            background: #f8fafc;
-            border: 2px dashed #cbd5e1;
-            border-radius: 8px;
-            overflow: hidden;
-            touch-action: none; /* Cegah scroll layar saat menggambar di smartphone */
-        }
-        #signature-pad {
-            display: block;
-            width: 100%;
-            height: 200px;
-            cursor: crosshair;
-        }
-        .rubric-list li { margin-bottom: 0.35rem; font-size: 0.875rem; color: #475569; }
-        .rubric-list strong { color: #1e293b; }
+      }
+    }
+  </script>
 
-        /* Custom spinner */
-        .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 3px solid #ffffff;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
+  <!-- Font Awesome, QRCode, Canvas Confetti -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at top right, #0f172a 0%, #032b5f 35%, #02122c 100%);
+      min-height: 100vh;
+      color: #0f172a;
+    }
+
+    /* Physical Lanyard Visitor Badge Card */
+    .visitor-badge-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .visitor-badge-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 30px 60px -15px rgba(2, 132, 199, 0.35);
+    }
+
+    .lanyard-hole {
+      width: 50px;
+      height: 12px;
+      background: #0f172a;
+      border-radius: 10px;
+      margin: 12px auto 6px auto;
+      border: 2px solid #cbd5e1;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    /* Print Stylesheet */
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      #printableBadgeSection, #printableBadgeSection * {
+        visibility: visible !important;
+      }
+      #printableBadgeSection {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 85mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: 2px solid #000 !important;
+      }
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.2);
+    }
+
+    .dark-glass {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border-radius: 4px;
+    }
+
+    /* Sidebar Sliding Animation */
+    #mainSidebar {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
 </head>
-<body class="text-gray-800 antialiased pb-16">
+<body class="antialiased selection:bg-sky-500 selection:text-white">
 
-    <!-- Header Banner -->
-    <div class="max-w-3xl mx-auto mt-4 px-4 sm:px-0">
-        <div class="w-full rounded-t-xl overflow-hidden shadow-sm bg-gradient-to-r from-[#2f4a35] to-[#3b5d43] border border-gray-200 border-b-0">
-            <img src="https://raw.githubusercontent.com/jolodung/serah.terima/refs/heads/main/WhatsApp%20Image%202026-10-23%20at%2014.32.19.jpeg" 
-                 alt="Banner Kesiapan Tugas" 
-                 class="w-full h-auto object-cover max-h-56"
-                 onerror="this.style.display='none'; document.getElementById('fallback-banner').classList.remove('hidden');">
-            <div id="fallback-banner" class="hidden p-8 text-white text-center">
-                <span class="inline-block px-3 py-1 bg-white/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-2">Airport Security Division</span>
-                <h1 class="text-2xl font-bold tracking-tight">INSPEKSI PRE-OPERATION</h1>
-                <p class="text-sm text-green-100 mt-1">Pemastian Kesiapan Operasional Bandar Udara</p>
-            </div>
+  <!-- ==================== SIDEBAR & BACKDROP (Kombinasi Sidebar + Hamburger) ==================== -->
+  <!-- Backdrop Overlay (Hidden by default to prevent any blur or screen overlay when closed) -->
+  <div id="sidebarBackdrop" onclick="closeSidebar()" 
+       class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 transition-opacity duration-300 opacity-0 pointer-events-none" 
+       aria-hidden="true"></div>
+
+  <!-- Off-Canvas Sliding Sidebar Drawer -->
+  <aside id="mainSidebar" 
+         class="fixed top-0 left-0 bottom-0 z-50 w-80 max-w-[85vw] bg-slate-900 border-r border-slate-800 shadow-2xl backdrop-blur-2xl transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between"
+         aria-label="Sidebar Menu Navigasi">
+    
+    <!-- Sidebar Header -->
+    <div class="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/70">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-500 via-blue-600 to-indigo-700 flex items-center justify-center text-white shadow-lg shadow-sky-600/30 ring-2 ring-sky-500/20">
+          <i class="fa-solid fa-shield-halved text-xl"></i>
         </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-lg font-black text-white tracking-tight">E-Visitor</span>
+            <span class="px-2 py-0.5 rounded text-[9px] font-extrabold uppercase bg-sky-500 text-slate-950">
+              10 Pas
+            </span>
+          </div>
+          <p class="text-[11px] text-sky-200/70">Sistem Perizinan Pas Bandara</p>
+        </div>
+      </div>
+      <button onclick="closeSidebar()" aria-label="Tutup Sidebar" class="w-9 h-9 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white transition flex items-center justify-center cursor-pointer">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
     </div>
 
-    <div class="max-w-3xl mx-auto px-4 sm:px-0">
-        
-        <!-- Title Section -->
-        <div class="form-section rounded-t-none border-t-4 border-t-[#3b5d43]">
-            <div class="section-body">
-                <div class="flex items-center gap-2 mb-2">
-                    <span class="px-2.5 py-0.5 rounded text-xs font-semibold bg-green-100 text-[#3b5d43]">SOP-AVSEC</span>
-                    <span class="text-xs text-gray-500">KM 39 Tahun 2024 (PKPN)</span>
-                </div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-3">Check List Pemastian Kesiapan Pre-Operation</h1>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    Check List Pemastian Kesiapan Pre-Operation digunakan sebagai instrumen untuk memastikan kesiapan personel, fasilitas, dokumen, dan area kerja sebelum operasional penerbangan dimulai. Hasil pemeriksaan menjadi dasar penetapan kesiapan operasional serta tindak lanjut atas setiap temuan guna menjamin keamanan dan kelancaran operasional bandar udara.
-                </p>
-                <div class="mt-4 pt-4 border-t border-gray-200 flex flex-wrap justify-between items-center text-xs text-gray-500">
-                    <span class="text-red-600 font-semibold flex items-center gap-1">
-                        <span class="text-base leading-none">*</span> Menunjukkan pertanyaan yang wajib diisi
-                    </span>
-                    <span class="text-gray-400">Google Stitch Project #8423347193973236531</span>
-                </div>
-            </div>
+    <!-- Scrollable Menu Body -->
+    <div class="p-4 flex-1 overflow-y-auto space-y-4">
+      
+      <!-- Section: Navigasi Utama (Matching Image) -->
+      <div>
+        <div class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 px-3 py-1 mb-1.5">
+          Menu Navigasi
         </div>
+        
+        <div class="space-y-2">
+          <!-- 1. Formulir Peminjaman -->
+          <button onclick="navSelectTab('tab-form')" id="side-btn-tab-form" 
+                  class="side-tab-btn w-full px-4 py-3 rounded-2xl text-xs sm:text-sm font-bold transition flex items-center justify-between bg-gradient-to-r from-sky-600 to-blue-600 text-white shadow-lg shadow-sky-600/20 cursor-pointer">
+            <div class="flex items-center gap-3">
+              <i class="fa-solid fa-file-pen text-base w-5 text-center"></i>
+              <span>Formulir Peminjaman</span>
+            </div>
+            <i class="fa-solid fa-chevron-right text-xs opacity-75"></i>
+          </button>
 
-        <!-- FORM START -->
-        <form id="pengawasanForm" class="space-y-4" novalidate>
+          <!-- 2. Log & Monitoring Pas -->
+          <button onclick="navSelectTab('tab-data')" id="side-btn-tab-data" 
+                  class="side-tab-btn w-full px-4 py-3 rounded-2xl text-xs sm:text-sm font-semibold transition flex items-center justify-between text-slate-300 hover:text-white hover:bg-slate-800/70 cursor-pointer">
+            <div class="flex items-center gap-3">
+              <i class="fa-solid fa-list-check text-base w-5 text-center"></i>
+              <span>Log &amp; Monitoring Pas</span>
+            </div>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-800 text-sky-400 border border-slate-700 font-mono">
+              (<span id="sideTotalDataCount">0</span>)
+            </span>
+          </button>
+
+          <!-- 3. Airport Security Chief -->
+          <button onclick="navSelectTab('tab-stats')" id="side-btn-tab-stats" 
+                  class="side-tab-btn w-full px-4 py-3 rounded-2xl text-xs sm:text-sm font-semibold transition flex items-center justify-between text-slate-300 hover:text-white hover:bg-slate-800/70 cursor-pointer">
+            <div class="flex items-center gap-3">
+              <i class="fa-solid fa-user-shield text-base w-5 text-center"></i>
+              <span>Airport Security Chief</span>
+            </div>
+            <span class="text-[10px] font-semibold text-slate-400 bg-slate-800/60 px-2 py-0.5 rounded">4 Chief</span>
+          </button>
+
+          <!-- 4. Lihat Pas -->
+          <button onclick="openBadgeModalDirect(); closeSidebar();" 
+                  class="w-full px-4 py-3 rounded-2xl text-xs sm:text-sm font-semibold transition flex items-center justify-between text-amber-400 hover:text-amber-300 hover:bg-amber-400/10 border border-amber-500/20 cursor-pointer">
+            <div class="flex items-center gap-3">
+              <i class="fa-solid fa-id-card-clip text-base w-5 text-center"></i>
+              <span>Lihat Pas Visitor</span>
+            </div>
+            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Section: Area Kerja Luas (Workspace Maximizer) -->
+      <div class="pt-3 border-t border-slate-800/80">
+        <div class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 px-3 py-1 mb-1.5">
+          Area Kerja
+        </div>
+        <button onclick="toggleWorkspaceMode()" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/70 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-medium transition flex items-center justify-between cursor-pointer">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-expand text-sky-400"></i>
+            <span id="workspaceToggleLabel">Mode Area Kerja Luas</span>
+          </div>
+          <span class="text-[10px] px-1.5 py-0.5 bg-slate-800 text-slate-400 rounded">Toggle</span>
+        </button>
+      </div>
+
+      <!-- Section: 10 Pas Status Overview -->
+      <div class="pt-3 border-t border-slate-800/80 space-y-2">
+        <div class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 px-3">
+          10 Pas Visitor Resmi
+        </div>
+        <div class="bg-slate-950/60 rounded-xl p-3 border border-slate-800 text-xs space-y-2">
+          <div class="flex items-center justify-between text-slate-300">
+            <span class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span>
+              <span>Area P (Apron)</span>
+            </span>
+            <span class="font-mono text-sky-400 font-bold">21P - 25P</span>
+          </div>
+          <div class="flex items-center justify-between text-slate-300">
+            <span class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+              <span>Area T (Terminal)</span>
+            </span>
+            <span class="font-mono text-amber-400 font-bold">21T - 25T</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Airport Security Chiefs Roster -->
+      <div class="pt-3 border-t border-slate-800/80 space-y-2">
+        <div class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 px-3">
+          Airport Security Chiefs (4)
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div class="p-2 rounded-xl bg-slate-950/50 border border-slate-800 text-slate-300 flex items-center gap-2">
+            <i class="fa-solid fa-shield text-sky-400 text-xs"></i>
+            <span class="truncate font-medium">Hendrik</span>
+          </div>
+          <div class="p-2 rounded-xl bg-slate-950/50 border border-slate-800 text-slate-300 flex items-center gap-2">
+            <i class="fa-solid fa-shield text-sky-400 text-xs"></i>
+            <span class="truncate font-medium">Harry K.</span>
+          </div>
+          <div class="p-2 rounded-xl bg-slate-950/50 border border-slate-800 text-slate-300 flex items-center gap-2">
+            <i class="fa-solid fa-shield text-sky-400 text-xs"></i>
+            <span class="truncate font-medium">Indriyan M.</span>
+          </div>
+          <div class="p-2 rounded-xl bg-slate-950/50 border border-slate-800 text-slate-300 flex items-center gap-2">
+            <i class="fa-solid fa-shield text-sky-400 text-xs"></i>
+            <span class="truncate font-medium">Novisye M.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Sidebar Footer -->
+    <div class="p-4 border-t border-slate-800 bg-slate-950/80 text-center space-y-2">
+      <div class="flex items-center justify-between text-[11px] text-slate-400 px-1">
+        <span>Peminjaman 1x24 Jam</span>
+        <span class="text-emerald-400 font-semibold flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Siap
+        </span>
+      </div>
+      <button onclick="closeSidebar()" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition flex items-center justify-center gap-2 cursor-pointer">
+        <i class="fa-solid fa-chevron-left text-xs"></i>
+        <span>Tutup Menu (ESC)</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Top System Bar -->
+  <header class="bg-slate-950/85 backdrop-blur border-b border-slate-800 text-slate-300 text-xs py-2.5 px-4 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5 text-slate-200 font-medium">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <i class="fa-solid fa-plane-departure text-sky-400"></i>
+        <span>Airport Security &amp; Visitor Pass Management System</span>
+      </div>
+
+      <div class="flex items-center gap-4 text-xs font-medium">
+        <div class="flex items-center gap-1.5 bg-slate-900 px-3 py-1 rounded-lg border border-slate-800">
+          <i class="fa-regular fa-clock text-sky-400"></i>
+          <span id="liveClock" class="font-mono text-slate-200">--:--:-- WITA</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Header (Kombinasi Sidebar + Hamburger) -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-6 pb-4">
+    <div class="flex items-center justify-between gap-4 pb-6 border-b border-slate-800/80">
+      
+      <!-- Logo, Title & Hamburger Toggle Button -->
+      <div class="flex items-center gap-3 sm:gap-4">
+        <!-- Hamburger Toggle Button -->
+        <button onclick="toggleSidebar()" id="hamburgerBtn" aria-label="Buka Menu Navigasi" title="Buka Sidebar Navigasi" 
+          class="flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-sky-400 hover:text-white border border-slate-800 shadow-xl transition active:scale-95 focus:outline-none focus:ring-2 focus:ring-sky-500 cursor-pointer flex-shrink-0 group">
+          <i id="hamburgerIcon" class="fa-solid fa-bars text-xl group-hover:scale-110 transition-transform"></i>
+        </button>
+
+        <!-- Logo Shield Icon -->
+        <div class="w-11 h-11 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-sky-500 via-blue-600 to-indigo-700 flex items-center justify-center text-white shadow-xl shadow-sky-600/30 ring-4 ring-sky-500/20 flex-shrink-0">
+          <i class="fa-solid fa-shield-halved text-xl sm:text-2xl"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight">E-Visitor</h1>
+            <span class="px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-sky-500 text-slate-950">
+              10 Pas Resmi
+            </span>
+          </div>
+          <p class="text-sky-200/80 text-xs md:text-sm mt-0.5">
+            Sistem Perizinan Peminjaman Pas Visitor: Area <strong>P (Apron)</strong> &amp; <strong>T (Terminal)</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Side Indicator / Menu Trigger -->
+      <div class="flex items-center gap-2">
+        <button onclick="toggleSidebar()" title="Klik untuk membuka menu sidebar" class="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 text-sky-300 hover:text-white text-xs sm:text-sm font-semibold transition flex items-center gap-2 cursor-pointer shadow-lg group">
+          <i class="fa-solid fa-compass text-sky-400 group-hover:rotate-45 transition-transform"></i>
+          <span id="headerCurrentTabLabel">Formulir Peminjaman</span>
+          <i class="fa-solid fa-chevron-right text-[10px] text-slate-500"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Live Status Pill Bar of the 10 Official Passes -->
+    <div class="my-5 p-4 rounded-2xl dark-glass border border-slate-800 text-white shadow-xl">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-id-badge text-sky-400 text-sm"></i>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-slate-200">
+            Ketersediaan 10 Pas Visitor Resmi
+          </span>
+        </div>
+        <div class="flex items-center gap-4 text-xs font-semibold">
+          <span class="flex items-center gap-1.5 text-sky-400">
+            <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span> Area P (Apron): 21P - 25P
+          </span>
+          <span class="flex items-center gap-1.5 text-amber-400">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Area T (Terminal): 21T - 25T
+          </span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-5 sm:grid-cols-10 gap-2 mt-3" id="quickPassAvailabilityBar">
+        <!-- Generated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Body -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-20">
+
+    <!-- ==================== TAB 1: FORMULIR PEMINJAMAN ==================== -->
+    <div id="tab-form" class="tab-content">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- FORM COLUMN (7 Cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          <form id="loanForm" onsubmit="handleFormSubmit(event)" class="glass-panel rounded-3xl p-6 sm:p-8 space-y-7 shadow-2xl">
             
-            <!-- INFORMASI UMUM -->
-            <div class="form-section">
-                <div class="section-header flex items-center justify-between">
-                    <span>1. Informasi Umum</span>
-                    <span class="text-xs font-normal normal-case opacity-90">Data Pemeriksaan</span>
-                </div>
-                <div class="section-body space-y-5">
-                    <div>
-                        <label class="label-text">POSISI TUGAS <span class="required-star">*</span></label>
-                        <select id="posisiTugasSelect" name="posisiTugas" required class="input-field font-medium text-gray-800" onchange="toggleSections()">
-                            <option value="">-- Pilih Posisi Tugas --</option>
-                            <option value="PSCP">PSCP (Passenger Security Check Point)</option>
-                            <option value="HBSCP">HBSCP (Hold Baggage Security Check Point)</option>
-                            <option value="TSCP">TSCP (Transit Security Check Point)</option>
-                            <option value="ACSCP">ACSCP (Access Control Security Check Point)</option>
-                            <option value="AD">AD (Kedatangan Domestik)</option>
-                            <option value="WP">WP (Walk Patrol)</option>
-                            <option value="PC">PC (Pintu Check In)</option>
-                            <option value="SSCP KEBERANGKATAN">SSCP KEBERANGKATAN (Staff Security Check Point)</option>
-                            <option value="SSCP KEDATANGAN">SSCP KEDATANGAN</option>
-                            <option value="PATROLI">PATROLI (Mobile Patrol)</option>
-                            <option value="CCTV">CCTV (Surveillance Room)</option>
-                        </select>
-                        <p class="text-xs text-gray-500 mt-1">Form fasilitas dan area akan menyesuaikan secara otomatis dengan posisi yang dipilih.</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div>
-                            <label class="label-text">TANGGAL PENGAWASAN <span class="required-star">*</span></label>
-                            <input type="date" id="inputTanggal" name="tanggal" required class="input-field">
-                        </div>
-                        <div>
-                            <label class="label-text">WAKTU PENGAWASAN <span class="required-star">*</span></label>
-                            <input type="time" id="inputWaktu" name="waktu" required class="input-field">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="label-text">NAMA PERSONEL <span class="required-star">*</span></label>
-                        <input type="text" name="nama" placeholder="Masukkan nama lengkap personel" required class="input-field">
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div>
-                            <label class="label-text">NIK <span class="required-star">*</span></label>
-                            <input type="text" name="nik" placeholder="Nomor Induk Karyawan" required class="input-field">
-                        </div>
-                        <div>
-                            <label class="label-text">JABATAN <span class="required-star">*</span></label>
-                            <input type="text" name="jabatan" placeholder="Contoh: Senior Officer / Junior Officer" required class="input-field">
-                        </div>
-                    </div>
-                </div>
+            <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+              <div>
+                <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
+                  <i class="fa-solid fa-id-card text-sky-600"></i>
+                  Formulir Perizinan Peminjaman Pas Visitor
+                </h2>
+                <p class="text-slate-500 text-xs sm:text-sm mt-1">
+                  1 Nama peminjam dapat meminjam <strong>1 hingga 10 Pas Visitor</strong>
+                </p>
+              </div>
+              <span class="hidden sm:inline-flex px-3 py-1 bg-sky-100 text-sky-800 rounded-full text-xs font-bold">
+                Security Pass
+              </span>
             </div>
 
-            <!-- KESIAPAN PERSONEL -->
-            <div class="form-section">
-                <div class="section-header flex items-center justify-between">
-                    <span>2. Kesiapan Personel</span>
-                    <span class="text-xs font-normal normal-case opacity-90">10 Indikator Penilaian</span>
-                </div>
-                <div class="section-body bg-gray-50/80 border-b border-gray-200">
-                    <p class="text-xs text-gray-600 mb-3 leading-relaxed">
-                        Kesiapan personel bertujuan memastikan seluruh personel Airport Security yang bertugas telah memenuhi persyaratan administrasi, kompetensi, disiplin, penampilan, serta kesiapan pelayanan sehingga mampu melaksanakan tugas pengamanan secara profesional, aman, dan sesuai prosedur.
-                    </p>
-                    <p class="font-semibold text-xs text-gray-700 uppercase tracking-wide mb-1.5">Rubrik Penilaian:</p>
-                    <ul class="rubric-list list-disc pl-5">
-                        <li><strong>100</strong> : Memenuhi (Indikator terpenuhi sepenuhnya, konsisten tanpa temuan).</li>
-                        <li><strong>75</strong> : Cukup Memenuhi (Terpenuhi dengan temuan minor tidak signifikan).</li>
-                        <li><strong>50</strong> : Kurang Memenuhi (Terpenuhi sebagian, terdapat ketidaksesuaian).</li>
-                        <li><strong>25</strong> : Tidak Memadai (Sebagian besar tidak terpenuhi, berpotensi mengganggu tugas).</li>
-                        <li><strong>0</strong> : Tidak Memenuhi (Tidak terpenuhi sama sekali atau tidak dilaksanakan).</li>
-                    </ul>
-                </div>
-                <div class="section-body space-y-5">
-                    <div>
-                        <label class="label-text">1. Kehadiran personel lengkap sesuai plotting <span class="required-star">*</span></label>
-                        <select name="personel1" required class="input-field nilai-personel" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Memenuhi</option>
-                            <option value="75">75 - Cukup Memenuhi</option>
-                            <option value="50">50 - Kurang Memenuhi</option>
-                            <option value="25">25 - Tidak Memadai</option>
-                            <option value="0">0 - Tidak Memenuhi</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">2. Pengenaan Seragam dinas rapi serta atribut lengkap <span class="required-star">*</span></label>
-                        <select name="personel2" required class="input-field nilai-personel" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Memenuhi</option>
-                            <option value="75">75 - Cukup Memenuhi</option>
-                            <option value="50">50 - Kurang Memenuhi</option>
-                            <option value="25">25 - Tidak Memadai</option>
-                            <option value="0">0 - Tidak Memenuhi</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">3. ID Card dan pas bandara digunakan <span class="required-star">*</span></label>
-                        <select name="personel3" required class="input-field nilai-personel" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Memenuhi</option>
-                            <option value="75">75 - Cukup Memenuhi</option>
-                            <option value="50">50 - Kurang Memenuhi</option>
-                            <option value="25">25 - Tidak Memadai</option>
-                            <option value="0">0 - Tidak Memenuhi</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">4. Membawa SKP sesuai kompetensi <span class="required-star">*</span></label>
-                        <select name="personel4" required class="input-field nilai-personel" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Memenuhi</option>
-                            <option value="75">75 - Cukup Memenuhi</option>
-                            <option value="50">50 - Kurang Memenuhi</option>
-                            <option value="25">25 - Tidak Memadai</option>
-                            <option value="0">0 - Tidak Memenuhi</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">5. Tidak menggunakan HP, earphone/headset di area pelayanan <span class="required-star">*</span></label>
-                        <select name="personel5" required class="input-field nilai-personel" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Memenuhi</option>
-                            <option value="75">75 - Cukup Memenuhi</option>
-                            <option value="50">50 - Kurang Memenuhi</option>
-                            <option value="25">25 - Tidak Memadai</option>
-                            <option value="0">0 - Tidak Memenuhi</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">6. Tidak makan/minum saat bertugas <span class="required-star">*</span></label>
-                        <select name="personel6" required class="input-field nilai-personel" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Memenuhi</option>
-                            <option value="75">75 - Cukup Memenuhi</option>
-                            <option value="50">50 - Kurang Memenuhi</option>
-                            <option value="25">25 - Tidak Memadai</option>
-                            <option value="0">0 - Tidak Memenuhi</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">7. Personel standby di posisi tugas, tidak duduk santai/berselonjor <span class="required-star">*</span></label>
-                        <select name="personel7" required class="input-field nilai-personel" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Memenuhi</option>
-                            <option value="75">75 - Cukup Memenuhi</option>
-                            <option value="50">50 - Kurang Memenuhi</option>
-                            <option value="25">25 - Tidak Memadai</option>
-                            <option value="0">0 - Tidak Memenuhi</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">8. Sikap dan ekspresi ramah dengan senyum <span class="required-star">*</span></label>
-                        <select name="personel8" required class="input-field nilai-personel" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Memenuhi</option>
-                            <option value="75">75 - Cukup Memenuhi</option>
-                            <option value="50">50 - Kurang Memenuhi</option>
-                            <option value="25">25 - Tidak Memadai</option>
-                            <option value="0">0 - Tidak Memenuhi</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">9. Tidak mengobrol berlebihan di area tugas <span class="required-star">*</span></label>
-                        <select name="personel9" required class="input-field nilai-personel" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Memenuhi</option>
-                            <option value="75">75 - Cukup Memenuhi</option>
-                            <option value="50">50 - Kurang Memenuhi</option>
-                            <option value="25">25 - Tidak Memadai</option>
-                            <option value="0">0 - Tidak Memenuhi</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">10. Briefing pelayanan dan keamanan telah dilakukan <span class="required-star">*</span></label>
-                        <select name="personel10" required class="input-field nilai-personel" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Memenuhi</option>
-                            <option value="75">75 - Cukup Memenuhi</option>
-                            <option value="50">50 - Kurang Memenuhi</option>
-                            <option value="25">25 - Tidak Memadai</option>
-                            <option value="0">0 - Tidak Memenuhi</option>
-                        </select>
-                    </div>
-                    
-                    <!-- STATUS PERSONEL TIDAK MASUK / ABSEN -->
-                    <div class="mt-6 pt-5 border-t border-gray-200">
-                        <div class="flex items-center justify-between mb-2">
-                            <label class="label-text flex items-center gap-1.5">
-                                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                                <span>Personel Tidak Hadir / Absen</span>
-                            </label>
-                            <span class="text-[11px] text-gray-500 italic">Opsional (isi bila ada)</span>
-                        </div>
-                        <p class="text-xs text-gray-500 mb-3">Catat nama petugas shift yang tidak hadir saat pelaksanaan tugas jaga beserta alasannya.</p>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="text-xs font-semibold text-gray-700 block mb-1">Nama Petugas yang Tidak Masuk</label>
-                                <input type="text" name="petugasTidakMasuk" placeholder="Contoh: Budi Pratama, Siti Aminah" class="input-field text-sm">
-                            </div>
-                            <div>
-                                <label class="text-xs font-semibold text-gray-700 block mb-1">Keterangan / Alasan Tidak Masuk</label>
-                                <select name="keteranganTidakMasuk" class="input-field text-sm">
-                                    <option value="">-- Pilih Keterangan --</option>
-                                    <option value="Sakit">Sakit (Ada Surat Dokter)</option>
-                                    <option value="Sakit Tanpa Keterangan Dokter">Sakit (Tanpa Surat Dokter)</option>
-                                    <option value="Izin">Izin Keperluan Mendesak</option>
-                                    <option value="Cuti">Cuti Tahunan / Alasan Penting</option>
-                                    <option value="Alpa / Tanpa Keterangan">Alpa / Tanpa Keterangan</option>
-                                    <option value="Dinas Luar / Diklat">Dinas Luar / Diklat / Pelatihan</option>
-                                    <option value="Lainnya">Lainnya (Jelaskan di catatan)</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+            <!-- SECTION 1: DATA IDENTITAS PEMINJAM -->
+            <div class="space-y-4">
+              <div class="flex items-center gap-2 text-xs font-bold text-sky-800 tracking-wider uppercase">
+                <span class="w-5 h-5 rounded-full bg-sky-600 text-white flex items-center justify-center text-[10px]">1</span>
+                <span>Data Identitas Peminjam</span>
+              </div>
 
-                    <!-- CATATAN PETUGAS -->
-                    <div class="mt-4">
-                        <label class="text-xs font-semibold text-gray-700 block mb-1 flex items-center justify-between">
-                            <span>Catatan Petugas / Temuan Personel</span>
-                            <span class="text-[11px] font-normal text-gray-400">Opsional</span>
-                        </label>
-                        <textarea name="catatanPetugas" rows="2" placeholder="Catatan pengawasan terkait kedisiplinan, materi briefing, kelengkapan seragam, atau koordinasi personel..." class="input-field text-sm"></textarea>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Nama Lengkap Peminjam -->
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700">
+                    Nama Lengkap Peminjam <span class="text-rose-500">*</span>
+                  </label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                      <i class="fa-solid fa-user"></i>
                     </div>
-
-                    <!-- Hasil Kalkulasi Kesiapan Personel -->
-                    <div class="bg-[#eef2ef] p-4 rounded-lg flex justify-between items-center border border-[#c3d1c8]">
-                        <div>
-                            <span class="block text-xs text-gray-500 uppercase tracking-wide">Total Skor Personel</span>
-                            <span class="text-lg font-bold text-gray-800" id="totalPersonelText">0</span>
-                            <span class="text-xs text-gray-500"> / 1000</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="block text-xs text-gray-500 uppercase tracking-wide">Rata-rata Personel</span>
-                            <span class="text-2xl font-extrabold text-[#3b5d43]" id="rataPersonelText">0.00</span>
-                        </div>
-                    </div>
+                    <input type="text" id="borrowerName" required
+                      placeholder="Contoh: Jack David Nome"
+                      oninput="updateLiveBadge()"
+                      class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-sky-500 outline-none transition" />
+                  </div>
                 </div>
+
+                <!-- Nomor Kontak / WhatsApp -->
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700">
+                    Nomor Kontak / WhatsApp <span class="text-rose-500">*</span>
+                  </label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                      <i class="fa-brands fa-whatsapp text-emerald-600 text-base"></i>
+                    </div>
+                    <input type="tel" id="borrowerPhone" required
+                      placeholder="Contoh: 0812-3456-7890"
+                      class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-sky-500 outline-none transition" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Nomor Identitas (KTP / SIM / ID) -->
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700">
+                    Nomor Identitas (KTP / SIM / KTA) <span class="text-rose-500">*</span>
+                  </label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                      <i class="fa-solid fa-address-card"></i>
+                    </div>
+                    <input type="text" id="borrowerId" required
+                      placeholder="Contoh: KTA TNI 54321 / SIM A / KTP"
+                      oninput="updateLiveBadge()"
+                      class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-sky-500 outline-none transition" />
+                  </div>
+                </div>
+
+                <!-- Instansi / Perusahaan (ISIAN MANUAL BEBAS) -->
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700">
+                    Instansi / Perusahaan <span class="text-rose-500">*</span>
+                  </label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                      <i class="fa-solid fa-building-shield"></i>
+                    </div>
+                    <input type="text" id="borrowerCompany" required
+                      placeholder="Contoh: TNI-AU, POLRI, BRI, Telkom, Pertamina..."
+                      oninput="updateLiveBadge()"
+                      class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-sky-500 outline-none transition" />
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <!-- KESIAPAN FASILITAS -->
-            <div class="form-section">
-                <div class="section-header flex items-center justify-between">
-                    <span>3. Kesiapan Fasilitas</span>
-                    <span id="badgeFasilitasInfo" class="text-xs font-normal normal-case opacity-90">Sesuai Posisi</span>
-                </div>
-                <div class="section-body bg-gray-50/80 border-b border-gray-200">
-                    <p class="text-xs text-gray-600 mb-3 leading-relaxed">
-                        Kesiapan fasilitas bertujuan memastikan seluruh peralatan, sistem, dan sarana pendukung keamanan penerbangan berada dalam kondisi laik fungsi, siap digunakan, dan mendukung pelaksanaan operasional secara aman, efektif, dan sesuai ketentuan.
-                    </p>
-                    <p class="font-semibold text-xs text-gray-700 uppercase tracking-wide mb-1.5">Rubrik Penilaian:</p>
-                    <ul class="rubric-list list-disc pl-5">
-                        <li><strong>100</strong> : Dilaksanakan Sepenuhnya (Lengkap sesuai SOP, tepat waktu, terdokumentasi).</li>
-                        <li><strong>75</strong> : Dilaksanakan dgn Catatan (Kekurangan minor tidak mempengaruhi fungsi).</li>
-                        <li><strong>50</strong> : Dilaksanakan Sebagian (Sebagian item / tidak sepenuhnya sesuai SOP).</li>
-                        <li><strong>25</strong> : Tidak Konsisten (Terbatas pada sebagian kecil item).</li>
-                        <li><strong>0</strong> : Tidak Dilaksanakan (Tidak ada pengujian / tidak laik fungsi).</li>
-                    </ul>
-                </div>
-                <div class="section-body space-y-5">
-                    
-                    <!-- 1. Fasilitas Standard (PSCP, HBSCP, TSCP, ACSCP, SSCP) -->
-                    <div id="fasilitas-standard" class="space-y-5">
-                        <div>
-                            <label class="label-text">1. Pengujian kelaikan fungsi mesin X-Ray (daily check) <span class="required-star">*</span></label>
-                            <select name="fasilitas1" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="label-text">2. Pengujian kelaikan fungsi Walk Through Metal Detector (daily check) <span class="required-star">*</span></label>
-                            <select name="fasilitas2" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div id="div-fasilitas-etd">
-                            <label class="label-text">3. Pengujian fungsi Explosive Trace Detector (ETD) <span class="required-star">*</span></label>
-                            <select id="select-fasilitas-etd" name="fasilitas3" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="label-text">4. Pengujian fungsi Hand Held Metal Detector (HHMD) <span class="required-star">*</span></label>
-                            <select name="fasilitas4" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="label-text">5. Pengujian kamera CCTV dan sistem perekaman <span class="required-star">*</span></label>
-                            <select name="fasilitas5" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="label-text">6. Pengujian sistem peringatan darurat keamanan (Alarm) <span class="required-star">*</span></label>
-                            <select name="fasilitas6" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="label-text">7. Pemastian ketersediaan dan kelaikan peralatan pendukung keamanan <span class="required-star">*</span></label>
-                            <select name="fasilitas8" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="label-text">8. Pemastian ketersediaan Informasi Budaya Keamanan (Security Culture) <span class="required-star">*</span></label>
-                            <select name="fasilitas9" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="label-text">9. Pemastian ketersediaan hand glove (sarung tangan) pemeriksaan <span class="required-star">*</span></label>
-                            <select name="fasilitas10" required class="input-field nilai-fasilitas" onchange="hitungTotal()">
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                    </div>
+            <!-- SECTION 2: AREA IZIN & PEMILIHAN SAMPAI 10 PAS VISITOR -->
+            <div class="space-y-4 pt-2 border-t border-slate-200">
+              <div class="flex items-center gap-2 text-xs font-bold text-sky-800 tracking-wider uppercase">
+                <span class="w-5 h-5 rounded-full bg-sky-600 text-white flex items-center justify-center text-[10px]">2</span>
+                <span>Area Kunjungan &amp; Pilihan Pas Visitor</span>
+              </div>
 
-                    <!-- 2. Fasilitas Khusus Pos AD, WP, PC -->
-                    <div id="fasilitas-khusus" class="space-y-5 hidden">
-                        <div>
-                            <label class="label-text">1. Pengujian fungsi Handy Talkie (HT) komunikasi pos <span class="required-star">*</span></label>
-                            <select name="fasilitas_ht" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <!-- 3. Fasilitas Pos PATROLI -->
-                    <div id="fasilitas-patroli" class="space-y-5 hidden">
-                        <div>
-                            <label class="label-text">1. Pengujian fungsi HT Patroli <span class="required-star">*</span></label>
-                            <select name="fasilitas_patroli1" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="label-text">2. Pengujian fungsi Radio Base Patroli <span class="required-star">*</span></label>
-                            <select name="fasilitas_patroli2" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="label-text">3. Fungsi Sirine Kendaraan <span class="required-star">*</span></label>
-                            <select name="fasilitas_patroli3" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="label-text">4. Fungsi Lampu Rotator <span class="required-star">*</span></label>
-                            <select name="fasilitas_patroli4" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="label-text">5. Kesiapan & Kelaikan Kendaraan Patroli <span class="required-star">*</span></label>
-                            <select name="fasilitas_patroli5" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <!-- 4. Fasilitas Pos CCTV -->
-                    <div id="fasilitas-cctv" class="space-y-5 hidden">
-                        <div>
-                            <label class="label-text">1. Fungsi Komunikasi HT Ruang CCTV <span class="required-star">*</span></label>
-                            <select name="fasilitas_cctv1" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="label-text">2. Fungsi Pemantauan CCTV Landside <span class="required-star">*</span></label>
-                            <select name="fasilitas_cctv2" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="label-text">3. Fungsi Pemantauan CCTV Perimeter <span class="required-star">*</span></label>
-                            <select name="fasilitas_cctv3" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="label-text">4. Fungsi Pemantauan CCTV Airside <span class="required-star">*</span></label>
-                            <select name="fasilitas_cctv4" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="label-text">5. Fungsi Pemantauan CCTV Terminal Lantai 1 <span class="required-star">*</span></label>
-                            <select name="fasilitas_cctv5" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="label-text">6. Fungsi Pemantauan CCTV Terminal Lantai 2 <span class="required-star">*</span></label>
-                            <select name="fasilitas_cctv6" class="input-field nilai-fasilitas" onchange="hitungTotal()" disabled required>
-                                <option value="">-- Pilih Nilai --</option>
-                                <option value="100">100 - Dilaksanakan Sepenuhnya</option>
-                                <option value="75">75 - Dilaksanakan dgn Catatan</option>
-                                <option value="50">50 - Dilaksanakan Sebagian</option>
-                                <option value="25">25 - Tidak Konsisten</option>
-                                <option value="0">0 - Tidak Dilaksanakan</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- CATATAN FASILITAS -->
-                    <div class="mt-6 pt-5 border-t border-gray-200">
-                        <label class="text-xs font-semibold text-gray-700 block mb-1 flex items-center justify-between">
-                            <span class="flex items-center gap-1.5">
-                                <svg class="w-4 h-4 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-                                <span>Catatan Fasilitas / Temuan Kerusakan Peralatan</span>
-                            </span>
-                            <span class="text-[11px] font-normal text-gray-400">Opsional</span>
-                        </label>
-                        <textarea name="catatanFasilitas" rows="2" placeholder="Tuliskan temuan kendala alat (misal: Mesin X-Ray PSCP 1 layar bergaris, sensitivitas WTMD perlu kalibrasi, HT channel 2 kresek-kresek, koordinasi teknisi)..." class="input-field text-sm"></textarea>
-                    </div>
-                    
-                    <!-- Hasil Kalkulasi Kesiapan Fasilitas -->
-                    <div class="bg-[#eef2ef] p-4 rounded-lg flex justify-between items-center border border-[#c3d1c8]">
-                        <div>
-                            <span class="block text-xs text-gray-500 uppercase tracking-wide">Total Skor Fasilitas</span>
-                            <span class="text-lg font-bold text-gray-800" id="totalFasilitasText">0</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="block text-xs text-gray-500 uppercase tracking-wide">Rata-rata Fasilitas</span>
-                            <span class="text-2xl font-extrabold text-[#3b5d43]" id="rataFasilitasText">0.00</span>
-                        </div>
-                    </div>
+              <!-- Area Izin / Kategori Kunjungan (TULIS MANUAL BEBAS) -->
+              <div class="space-y-1.5">
+                <label class="block text-xs font-bold text-slate-700">
+                  Area Izin / Kategori Kunjungan <span class="text-rose-500">*</span>
+                </label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                  </div>
+                  <input type="text" id="accessCategory" required
+                    placeholder="Contoh: Maintenance Ground Handling / Perbaikan Runway / Pengamanan VIP"
+                    oninput="updateLiveBadge()"
+                    class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-sky-500 outline-none transition" />
                 </div>
+              </div>
+
+              <!-- MULTI-SELECT 10 PAS VISITOR: 21P, 22P, 23P, 24P, 25P & 21T, 22T, 23T, 24T, 25T -->
+              <div class="space-y-2.5 pt-1">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <label class="block text-xs font-bold text-slate-700">
+                    Pilih Pas Visitor yang Dipinjam (Bisa 1 s/d 10 Pas Sekaligus) <span class="text-rose-500">*</span>
+                  </label>
+                  <span id="selectedCounterBadge" class="text-xs font-extrabold text-sky-800 bg-sky-100 px-2.5 py-0.5 rounded-full">
+                    Terpilih: 1 Pas
+                  </span>
+                </div>
+
+                <!-- Quick Selection Buttons -->
+                <div class="flex flex-wrap items-center gap-1.5 text-[11px]">
+                  <button type="button" onclick="quickSelectAll()" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold border border-slate-300 transition">
+                    Pilih Semua Tersedia
+                  </button>
+                  <button type="button" onclick="quickSelectApron()" class="px-2.5 py-1 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 font-semibold border border-sky-300 transition">
+                    + Semua Apron (P)
+                  </button>
+                  <button type="button" onclick="quickSelectTerminal()" class="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-semibold border border-amber-300 transition">
+                    + Semua Terminal (T)
+                  </button>
+                  <button type="button" onclick="clearSelectedPasses()" class="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold border border-rose-300 transition">
+                    Bersihkan Pilihan
+                  </button>
+                </div>
+
+                <!-- 10 Slots Grouped Selection -->
+                <div class="space-y-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                  
+                  <!-- Area P: 21P - 25P -->
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-xs font-extrabold text-sky-900 flex items-center gap-1.5">
+                        <i class="fa-solid fa-plane-departure text-sky-600"></i> Area P (Apron):
+                      </span>
+                      <span class="text-[10px] text-slate-500">Pas Sisi Udara 21P s/d 25P</span>
+                    </div>
+                    <div class="grid grid-cols-5 gap-2" id="gridPassP">
+                      <!-- Populated by JS -->
+                    </div>
+                  </div>
+
+                  <!-- Area T: 21T - 25T -->
+                  <div class="pt-3 border-t border-slate-200">
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-xs font-extrabold text-amber-900 flex items-center gap-1.5">
+                        <i class="fa-solid fa-building text-amber-600"></i> Area T (Terminal):
+                      </span>
+                      <span class="text-[10px] text-slate-500">Pas Terminal 21T s/d 25T</span>
+                    </div>
+                    <div class="grid grid-cols-5 gap-2" id="gridPassT">
+                      <!-- Populated by JS -->
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="p-2.5 bg-sky-50 border border-sky-200 rounded-xl text-xs text-sky-900 flex items-center justify-between">
+                  <span>Daftar Pas Terpilih: <strong id="selectedPassesSummary" class="font-mono text-sky-950 font-bold">21P</strong></span>
+                  <span class="text-[11px] font-semibold text-sky-700">Otorisasi Keamanan</span>
+                </div>
+              </div>
+
             </div>
 
-            <!-- KESIAPAN DOKUMEN (Disembunyikan untuk AD, WP, PC, PATROLI, CCTV) -->
-            <div id="section-dokumen" class="form-section">
-                <div class="section-header flex items-center justify-between">
-                    <span>4. Kesiapan Dokumen</span>
-                    <span class="text-xs font-normal normal-case opacity-90">3 Indikator Penilaian</span>
-                </div>
-                <div class="section-body bg-gray-50/80 border-b border-gray-200">
-                    <p class="text-xs text-gray-600 mb-3 leading-relaxed">
-                        Kesiapan dokumen bertujuan memastikan seluruh dokumen operasional yang diperlukan tersedia, mutakhir, mudah diakses, dan siap digunakan.
-                    </p>
-                    <p class="font-semibold text-xs text-gray-700 uppercase tracking-wide mb-1.5">Rubrik Penilaian:</p>
-                    <ul class="rubric-list list-disc pl-5">
-                        <li><strong>100</strong> : Tersedia Lengkap</li>
-                        <li><strong>75</strong> : Tersedia dengan Catatan Minor</li>
-                        <li><strong>50</strong> : Tersedia Sebagian</li>
-                        <li><strong>25</strong> : Tersedia Terbatas</li>
-                        <li><strong>0</strong> : Tidak Tersedia</li>
-                    </ul>
-                </div>
-                <div class="section-body space-y-5">
-                    <div>
-                        <label class="label-text">1. Ketersediaan Salinan SOP di masing-masing working station <span class="required-star">*</span></label>
-                        <select name="dokumen1" required class="input-field nilai-dokumen" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Tersedia Lengkap</option>
-                            <option value="75">75 - Tersedia dengan Catatan</option>
-                            <option value="50">50 - Tersedia Sebagian</option>
-                            <option value="25">25 - Tersedia Terbatas</option>
-                            <option value="0">0 - Tidak Tersedia</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">2. Ketersediaan Daftar prohibited items terbaru & jelas terbaca <span class="required-star">*</span></label>
-                        <select name="dokumen2" required class="input-field nilai-dokumen" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Tersedia Lengkap</option>
-                            <option value="75">75 - Tersedia dengan Catatan</option>
-                            <option value="50">50 - Tersedia Sebagian</option>
-                            <option value="25">25 - Tersedia Terbatas</option>
-                            <option value="0">0 - Tidak Tersedia</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">3. Ketersediaan Log book tugas jaga pos <span class="required-star">*</span></label>
-                        <select name="dokumen3" required class="input-field nilai-dokumen" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Tersedia Lengkap</option>
-                            <option value="75">75 - Tersedia dengan Catatan</option>
-                            <option value="50">50 - Tersedia Sebagian</option>
-                            <option value="25">25 - Tersedia Terbatas</option>
-                            <option value="0">0 - Tidak Tersedia</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Hasil Kalkulasi Kesiapan Dokumen -->
-                    <div class="bg-[#eef2ef] p-4 rounded-lg flex justify-between items-center border border-[#c3d1c8]">
-                        <div>
-                            <span class="block text-xs text-gray-500 uppercase tracking-wide">Total Skor Dokumen</span>
-                            <span class="text-lg font-bold text-gray-800" id="totalDokumenText">0</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="block text-xs text-gray-500 uppercase tracking-wide">Rata-rata Dokumen</span>
-                            <span class="text-2xl font-extrabold text-[#3b5d43]" id="rataDokumenText">0.00</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- SECTION 3: WAKTU & AIRPORT SECURITY CHIEF -->
+            <div class="space-y-4 pt-2 border-t border-slate-200">
+              <div class="flex items-center gap-2 text-xs font-bold text-sky-800 tracking-wider uppercase">
+                <span class="w-5 h-5 rounded-full bg-sky-600 text-white flex items-center justify-center text-[10px]">3</span>
+                <span>Waktu Peminjaman &amp; Airport Security Chief</span>
+              </div>
 
-            <!-- KESIAPAN AREA TUGAS (Disembunyikan untuk AD, WP, PC, PATROLI, CCTV) -->
-            <div id="section-area" class="form-section">
-                <div class="section-header flex items-center justify-between">
-                    <span>5. Kesiapan Area Tugas</span>
-                    <span class="text-xs font-normal normal-case opacity-90">4 Indikator Penilaian</span>
+              <!-- Waktu Peminjaman (Satu-satunya label peringatan 1x24 jam ditempatkan di sini) -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700">
+                    Waktu Mulai Peminjaman <span class="text-rose-500">*</span>
+                  </label>
+                  <input type="text" id="borrowTimestamp" readonly
+                    class="w-full px-3.5 py-2.5 bg-slate-100 border border-slate-300 rounded-xl text-xs font-mono font-bold text-slate-800 outline-none" />
                 </div>
-                <div class="section-body bg-gray-50/80 border-b border-gray-200">
-                    <p class="text-xs text-gray-600 mb-3 leading-relaxed">
-                        Kesiapan area tugas bertujuan memastikan seluruh area kerja Airport Security berada dalam kondisi aman, tertib, bersih, dan siap digunakan sesuai perimeter steril.
-                    </p>
-                    <p class="font-semibold text-xs text-gray-700 uppercase tracking-wide mb-1.5">Rubrik Penilaian:</p>
-                    <ul class="rubric-list list-disc pl-5">
-                        <li><strong>100</strong> : Memenuhi (Tidak ditemukan ketidaksesuaian).</li>
-                        <li><strong>75</strong> : Memenuhi dgn Temuan Minor.</li>
-                        <li><strong>50</strong> : Memenuhi Sebagian.</li>
-                        <li><strong>25</strong> : Kurang Memenuhi.</li>
-                        <li><strong>0</strong> : Tidak Memenuhi.</li>
-                    </ul>
-                </div>
-                <div class="section-body space-y-5">
-                    <div>
-                        <label class="label-text">1. Area steril bebas dari Prohibited Item <span class="required-star">*</span></label>
-                        <select name="area1" required class="input-field nilai-area" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Memenuhi</option>
-                            <option value="75">75 - Memenuhi dgn Temuan Minor</option>
-                            <option value="50">50 - Memenuhi Sebagian</option>
-                            <option value="25">25 - Kurang Memenuhi</option>
-                            <option value="0">0 - Tidak Memenuhi</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">2. Jalur evakuasi darurat tidak terhalang <span class="required-star">*</span></label>
-                        <select name="area2" required class="input-field nilai-area" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Memenuhi</option>
-                            <option value="75">75 - Memenuhi dgn Temuan Minor</option>
-                            <option value="50">50 - Memenuhi Sebagian</option>
-                            <option value="25">25 - Kurang Memenuhi</option>
-                            <option value="0">0 - Tidak Memenuhi</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">3. Rambu dan pembatas antrean (tensabarrier) terpasang baik <span class="required-star">*</span></label>
-                        <select name="area3" required class="input-field nilai-area" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Memenuhi</option>
-                            <option value="75">75 - Memenuhi dgn Temuan Minor</option>
-                            <option value="50">50 - Memenuhi Sebagian</option>
-                            <option value="25">25 - Kurang Memenuhi</option>
-                            <option value="0">0 - Tidak Memenuhi</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label-text">4. Kebersihan dan kerapian working station pos jaga <span class="required-star">*</span></label>
-                        <select name="area4" required class="input-field nilai-area" onchange="hitungTotal()">
-                            <option value="">-- Pilih Nilai --</option>
-                            <option value="100">100 - Memenuhi</option>
-                            <option value="75">75 - Memenuhi dgn Temuan Minor</option>
-                            <option value="50">50 - Memenuhi Sebagian</option>
-                            <option value="25">25 - Kurang Memenuhi</option>
-                            <option value="0">0 - Tidak Memenuhi</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Hasil Kalkulasi Kesiapan Area -->
-                    <div class="bg-[#eef2ef] p-4 rounded-lg flex justify-between items-center border border-[#c3d1c8]">
-                        <div>
-                            <span class="block text-xs text-gray-500 uppercase tracking-wide">Total Skor Area</span>
-                            <span class="text-lg font-bold text-gray-800" id="totalAreaText">0</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="block text-xs text-gray-500 uppercase tracking-wide">Rata-rata Area</span>
-                            <span class="text-2xl font-extrabold text-[#3b5d43]" id="rataAreaText">0.00</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- HASIL KESELURUHAN -->
-            <div class="form-section p-6 bg-gradient-to-r from-[#2f4a35] to-[#3b5d43] text-white shadow-lg">
-                <div class="flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-4">
-                    <div>
-                        <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white/20 text-green-100 uppercase tracking-wider mb-1">Indeks Kesiapan Operasional</span>
-                        <h2 class="text-xl sm:text-2xl font-extrabold">Rata-rata Kesiapan Keseluruhan</h2>
-                        <p class="text-xs text-green-100 mt-1 max-w-md">Akumulasi rata-rata terbobot dari seluruh kriteria yang dinilai aktif sesuai Posisi Tugas.</p>
-                    </div>
-                    <div class="bg-white text-[#3b5d43] px-6 py-4 rounded-xl shadow-md text-center min-w-[140px]">
-                        <span class="block text-xs font-bold uppercase tracking-wider text-gray-500">Nilai Akhir</span>
-                        <span class="text-3xl sm:text-4xl font-black" id="rataKeseluruhanText">0.00</span>
-                        <span id="badgeStatusKesiapan" class="block text-[11px] font-bold mt-1 text-gray-500">Belum Lengkap</span>
-                    </div>
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700">
+                    Batas Waktu Pengembalian (1 x 24 Jam) <span class="text-rose-500">*</span>
+                  </label>
+                  <input type="text" id="returnTimestamp" readonly
+                    class="w-full px-3.5 py-2.5 bg-amber-50 border border-amber-300 rounded-xl text-xs font-mono font-bold text-amber-900 outline-none" />
                 </div>
-            </div>
+              </div>
 
-            <!-- TANDA TANGAN -->
-            <div class="form-section p-6">
-                <div class="flex items-center justify-between mb-2">
-                    <label class="label-text">TANDA TANGAN PENGAWAS <span class="required-star">*</span></label>
-                    <span id="statusTtd" class="text-xs font-medium text-gray-400">Belum ditandatangani</span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Airport Security Chief (Hendrik, Harry Kaunang, Indriyan Musa, Novisye Mumbunan) -->
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700">
+                    Airport Security Chief <span class="text-rose-500">*</span>
+                  </label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                      <i class="fa-solid fa-user-shield text-sky-600"></i>
+                    </div>
+                    <select id="securityChief" required onchange="updateLiveBadge()"
+                      class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:bg-white focus:ring-2 focus:ring-sky-500 outline-none transition">
+                      <option value="Hendrik" selected>Hendrik (Airport Security Chief)</option>
+                      <option value="Harry Kaunang">Harry Kaunang (Airport Security Chief)</option>
+                      <option value="Indriyan Musa">Indriyan Musa (Airport Security Chief)</option>
+                      <option value="Novisye Mumbunan">Novisye Mumbunan (Airport Security Chief)</option>
+                    </select>
+                  </div>
                 </div>
-                <p class="text-xs text-gray-500 mb-3">Silakan bubuhkan tanda tangan langsung di dalam area kanvas menggunakan jari atau mouse.</p>
-                
-                <div class="signature-wrapper">
-                    <canvas id="signature-pad"></canvas>
+
+                <!-- Keterangan Tambahan -->
+                <div class="space-y-1.5">
+                  <label class="block text-xs font-bold text-slate-700">
+                    Keterangan Singkat Tambahan
+                  </label>
+                  <input type="text" id="loanNotes"
+                    placeholder="Contoh: Rombongan teknisi 3 orang"
+                    class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-sky-500 outline-none transition" />
                 </div>
-                
-                <div class="flex justify-between items-center mt-3">
-                    <button type="button" id="clear-signature" class="text-xs font-semibold text-red-600 hover:text-red-700 hover:underline flex items-center gap-1">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        Hapus Tanda Tangan
-                    </button>
-                    <span class="text-[11px] text-gray-400 italic">Otomatis tersimpan sebagai berkas PNG di Google Drive</span>
-                </div>
+              </div>
+
+              <!-- SOP Checklist -->
+              <div class="pt-2">
+                <label class="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-200 cursor-pointer">
+                  <input type="checkbox" id="sopAgree" required checked class="mt-0.5 w-4 h-4 rounded text-sky-600 focus:ring-sky-500">
+                  <span class="text-xs text-slate-600 leading-relaxed">
+                    Saya menyatakan data peminjam di atas benar dan bersedia mematuhi seluruh <strong>SOP Keamanan Daerah Keamanan Terbatas (DKT)</strong> Bandara di bawah otorisasi <strong>Airport Security Chief</strong>.
+                  </span>
+                </label>
+              </div>
             </div>
 
             <!-- ACTION BUTTONS -->
-            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-2">
-                <button type="button" onclick="resetFormHandler()" class="text-sm text-gray-500 hover:text-gray-800 font-medium py-2 px-4 transition-colors">
-                    Kosongkan formulir
-                </button>
-                <button type="submit" id="submitBtn" class="w-full sm:w-auto bg-[#3b5d43] hover:bg-[#2f4a35] text-white px-9 py-3.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
-                    <span id="btnIcon">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                    </span>
-                    <span id="btnSpinner" class="spinner hidden"></span>
-                    <span id="btnText">Kirim Data Checklist</span>
-                </button>
-            </div>
-        </form>
-
-        <!-- LAYAR SUKSES -->
-        <div id="successMsg" class="hidden mt-6 p-8 bg-white rounded-2xl border border-green-200 text-center shadow-md">
-            <div class="w-16 h-16 bg-green-100 text-[#3b5d43] rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
-            </div>
-            <h3 class="text-2xl font-extrabold text-gray-900 mb-2">Checklist Berhasil Direkam!</h3>
-            <p class="text-sm text-gray-600 mb-6 max-w-md mx-auto">
-                Data kesiapan pre-operation telah tersimpan di Google Spreadsheet dan berkas tanda tangan telah diarsipkan di Google Drive.
-            </p>
-
-            <div class="bg-gray-50 rounded-xl p-4 max-w-sm mx-auto mb-6 text-left border border-gray-200 text-xs space-y-2">
-                <div class="flex justify-between"><span class="text-gray-500">Posisi Tugas:</span> <span class="font-bold text-gray-800" id="succPosisi">-</span></div>
-                <div class="flex justify-between"><span class="text-gray-500">Nama Personel:</span> <span class="font-bold text-gray-800" id="succNama">-</span></div>
-                <div class="flex justify-between"><span class="text-gray-500">Rata-rata Kesiapan:</span> <span class="font-extrabold text-[#3b5d43]" id="succSkor">0.00</span></div>
-                <div class="flex justify-between"><span class="text-gray-500">Status Kesiapan:</span> <span class="font-bold text-green-700" id="succStatus">MEMENUHI</span></div>
+            <div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+              <button type="submit" id="submitBtn"
+                class="w-full sm:flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-700 hover:from-sky-500 hover:to-blue-600 text-white font-bold text-sm shadow-xl shadow-sky-600/30 flex items-center justify-center gap-2.5 transition active:scale-[0.98]">
+                <i class="fa-solid fa-file-circle-check text-base"></i>
+                <span id="submitBtnText">Terbitkan Izin &amp; Pinjam Pas</span>
+              </button>
+              <button type="button" onclick="loadSampleDataTni()"
+                class="w-full sm:w-auto py-3.5 px-4 rounded-2xl border border-slate-300 text-slate-700 hover:bg-slate-100 font-semibold text-xs transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-rotate-left"></i>
+                <span>Contoh TNI-AU</span>
+              </button>
+              <button type="button" onclick="loadSampleDataPolri()"
+                class="w-full sm:w-auto py-3.5 px-4 rounded-2xl border border-slate-300 text-slate-700 hover:bg-slate-100 font-semibold text-xs transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-rotate-left"></i>
+                <span>Contoh POLRI</span>
+              </button>
             </div>
 
-            <button onclick="resetToNewForm()" class="inline-flex items-center gap-2 bg-[#3b5d43] hover:bg-[#2f4a35] text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                Kirim Tanggapan Baru
-            </button>
+          </form>
         </div>
+
+        <!-- LIVE LANYARD BADGE CARD PREVIEW (5 Cols) -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="sticky top-20">
+            
+            <div class="flex items-center justify-between mb-3 text-slate-300">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-id-card-clip text-sky-400"></i>
+                <span class="text-xs font-bold uppercase tracking-wider">Preview Kartu Pas Visitor</span>
+              </div>
+              <span class="text-[11px] font-mono text-sky-300 bg-sky-950/70 px-2.5 py-0.5 rounded-full border border-sky-800">
+                Live Preview
+              </span>
+            </div>
+
+            <!-- PHYSICAL LANYARD VISITOR BADGE CARD -->
+            <div id="visitorBadgeCard" class="visitor-badge-card border border-slate-200">
+              
+              <!-- Lanyard Clip Hole -->
+              <div class="lanyard-hole"></div>
+
+              <!-- Top Header Band -->
+              <div id="badgeHeaderBand" class="px-6 pt-3 pb-4 bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-700 text-white transition-colors duration-300">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center font-black">
+                      <i class="fa-solid fa-shield-halved text-sm"></i>
+                    </span>
+                    <div>
+                      <h3 class="text-xs font-extrabold uppercase tracking-wider leading-none">BANDARA INTERNASIONAL</h3>
+                      <span class="text-[10px] font-medium opacity-90">AIRPORT SECURITY PASS</span>
+                    </div>
+                  </div>
+                  <!-- Big Pass Code Tag -->
+                  <span id="badgePassNumberTag" class="text-xs font-black font-mono bg-slate-950 text-white px-2.5 py-1 rounded-lg shadow-md border border-slate-700 max-w-[150px] truncate">
+                    PAS 21P
+                  </span>
+                </div>
+              </div>
+
+              <!-- Badge Body Content -->
+              <div class="p-6 space-y-4">
+                
+                <!-- Visitor Avatar & Main Info -->
+                <div class="flex items-center gap-4">
+                  <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-slate-200 to-slate-100 border-2 border-slate-300 flex items-center justify-center text-slate-600 text-2xl font-bold shadow-inner">
+                    <i class="fa-solid fa-user-shield"></i>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <h4 id="previewName" class="text-lg font-black text-slate-900 truncate">
+                      Jack David Nome
+                    </h4>
+                    <p id="previewCompany" class="text-xs font-extrabold text-sky-700 truncate">
+                      TNI-AU
+                    </p>
+                    <span id="previewPassTypePill" class="inline-flex mt-1 items-center px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wide bg-sky-100 text-sky-900 border border-sky-300">
+                      ✈️ AREA P (APRON)
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Info Grid -->
+                <div class="grid grid-cols-2 gap-2.5 p-3.5 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
+                  <div>
+                    <span class="text-[10px] uppercase font-bold text-slate-400 block">No. Identitas</span>
+                    <span id="previewIdNumber" class="font-semibold text-slate-800 font-mono text-[11px] truncate block">
+                      KTA TNI 54321
+                    </span>
+                  </div>
+                  <div>
+                    <span class="text-[10px] uppercase font-bold text-slate-400 block">Masa Berlaku</span>
+                    <span id="previewValidity" class="font-semibold text-emerald-700 font-mono text-[11px] block">
+                      Tervalidasi
+                    </span>
+                  </div>
+                  <div class="col-span-2">
+                    <span class="text-[10px] uppercase font-bold text-slate-400 block">Airport Security Chief</span>
+                    <span id="previewSecurityChief" class="font-bold text-sky-900 text-[11px] block">
+                      Hendrik
+                    </span>
+                  </div>
+                  <div class="col-span-2">
+                    <span class="text-[10px] uppercase font-bold text-slate-400 block">Daftar Pas Terpinjam</span>
+                    <span id="previewPassListText" class="font-bold text-slate-800 font-mono text-[11px] truncate block">
+                      21P
+                    </span>
+                  </div>
+                  <div class="col-span-2">
+                    <span class="text-[10px] uppercase font-bold text-slate-400 block">Kategori / Area Izin</span>
+                    <span id="previewCategory" class="font-medium text-slate-700 text-[11px] truncate block">
+                      Patroli Khusus Apron & Base Ops
+                    </span>
+                  </div>
+                </div>
+
+                <!-- QR Code & Security Stamp -->
+                <div class="flex items-center justify-between gap-4 pt-1">
+                  <div class="space-y-1">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Security Token</span>
+                    <div class="font-mono text-[11px] text-slate-800 font-bold" id="previewTokenCode">
+                      EV-20261028-21P
+                    </div>
+                    <div class="text-[9px] text-slate-400">
+                      Security Pass Bandara
+                    </div>
+                  </div>
+
+                  <!-- QR Container -->
+                  <div class="p-2 bg-white rounded-xl border border-slate-200 shadow-sm flex items-center justify-center">
+                    <div id="liveBadgeQrCode" class="w-20 h-20"></div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Bottom Footer Bar -->
+              <div class="px-6 py-2.5 bg-slate-900 text-slate-400 text-[10px] flex items-center justify-between border-t border-slate-800">
+                <span>Wajib Dikalungkan Selama Kunjungan</span>
+                <span class="font-mono text-slate-300">AVSEC SECURE</span>
+              </div>
+
+            </div>
+
+            <!-- Badge Quick Actions -->
+            <div class="flex items-center gap-2.5 mt-4">
+              <button onclick="printActiveBadge()" class="flex-1 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs transition flex items-center justify-center gap-2 border border-slate-700 shadow-lg">
+                <i class="fa-solid fa-print"></i>
+                <span>Cetak Pas Visitor (Print)</span>
+              </button>
+              <button onclick="copyPassDetails()" class="py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-sky-400 font-semibold text-xs transition flex items-center justify-center gap-2 border border-slate-700 shadow-lg">
+                <i class="fa-solid fa-copy"></i>
+                <span>Salin Data</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ==================== TAB 2: MONITORING DATA PEMINJAMAN ==================== -->
+    <div id="tab-data" class="tab-content hidden space-y-6">
+      
+      <!-- Control & Filter Bar -->
+      <div class="glass-panel rounded-3xl p-5 shadow-2xl space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+              <i class="fa-solid fa-table-list text-sky-600"></i>
+              Log &amp; Monitoring Peminjaman Pas Visitor
+            </h2>
+            <p class="text-slate-500 text-xs mt-0.5">
+              Monitoring 10 Pas Visitor Bandara (21P-25P &amp; 21T-25T) serta riwayat peminjaman
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="syncData()" class="px-3.5 py-2 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-700 text-xs font-bold transition flex items-center gap-1.5 border border-sky-300">
+              <i class="fa-solid fa-arrows-rotate" id="syncIcon"></i> Sinkron Cloud
+            </button>
+            <button onclick="switchTab('tab-form')" class="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md">
+              <i class="fa-solid fa-plus"></i> Tambah Pinjaman Baru
+            </button>
+            <button onclick="exportToCsv()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition flex items-center gap-1.5 border border-slate-300">
+              <i class="fa-solid fa-file-excel text-emerald-600"></i> Ekspor CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Row -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3 border-t border-slate-200">
+          
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <i class="fa-solid fa-magnifying-glass text-xs"></i>
+            </div>
+            <input type="text" id="tableSearchInput" oninput="applyTableFilters()"
+              placeholder="Cari nama, instansi, No Pas..."
+              class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-sky-500 outline-none" />
+          </div>
+
+          <div>
+            <select id="filterArea" onchange="applyTableFilters()"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-sky-500 outline-none">
+              <option value="ALL">Semua Area Pas</option>
+              <option value="P">✈️ Area P (Apron: 21P - 25P)</option>
+              <option value="T">🏢 Area T (Terminal: 21T - 25T)</option>
+            </select>
+          </div>
+
+          <div>
+            <select id="filterStatus" onchange="applyTableFilters()"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-sky-500 outline-none">
+              <option value="ALL">Semua Status</option>
+              <option value="Dipinjam">🟠 Sedang Dipinjam (Aktif)</option>
+              <option value="Kembali">🟢 Sudah Dikembalikan</option>
+            </select>
+          </div>
+
+          <div>
+            <select id="filterChief" onchange="applyTableFilters()"
+              class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 focus:bg-white focus:ring-2 focus:ring-sky-500 outline-none">
+              <option value="ALL">Semua Airport Security Chief</option>
+              <option value="Hendrik">Hendrik</option>
+              <option value="Harry Kaunang">Harry Kaunang</option>
+              <option value="Indriyan Musa">Indriyan Musa</option>
+              <option value="Novisye Mumbunan">Novisye Mumbunan</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Table Container -->
+      <div class="glass-panel rounded-3xl overflow-hidden shadow-2xl border border-slate-200">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-700">
+            <thead class="bg-slate-900 text-slate-300 uppercase font-extrabold tracking-wider text-[10px]">
+              <tr>
+                <th scope="col" class="py-3.5 px-4 text-center">No</th>
+                <th scope="col" class="py-3.5 px-4">Peminjam &amp; Instansi</th>
+                <th scope="col" class="py-3.5 px-4">Nomor Pas (1 s/d 10)</th>
+                <th scope="col" class="py-3.5 px-4">Area Izin / Kategori</th>
+                <th scope="col" class="py-3.5 px-4">Identitas</th>
+                <th scope="col" class="py-3.5 px-4">Waktu Pinjam &amp; Kembali</th>
+                <th scope="col" class="py-3.5 px-4">Airport Security Chief</th>
+                <th scope="col" class="py-3.5 px-4 text-center">Status</th>
+                <th scope="col" class="py-3.5 px-4 text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="visitorTableBody" class="divide-y divide-slate-200">
+              <!-- Populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="p-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
+          <div>
+            Menampilkan <span id="showingCount" class="font-bold text-slate-800">0</span> dari <span id="totalRecordCount" class="font-bold text-slate-800">0</span> data peminjaman
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] text-slate-400">Pembaruan Otomatis</span>
+          </div>
+        </div>
+      </div>
 
     </div>
 
-    <!-- Script Logika Frontend & Backend Connection -->
-    <script>
-        // =========================================================================
-        // URL WEB APP APPS SCRIPT (Jika form di-host di luar Google Apps Script)
-        // Jika berjalan di dalam Google Apps Script (HTMLService), otomatis pakai google.script.run
-        // =========================================================================
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyimjszG_pq6LoXtpLi4eoSIXdmLPk2Hpmbo9ZhAq4xGJuXXgV2PaiqgLfqC7D6n8fCkg/exec'; 
 
-        // Inisialisasi Tanggal & Jam Otomatis Saat Buka Halaman
-        window.addEventListener('DOMContentLoaded', () => {
-            const today = new Date();
-            const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const dd = String(today.getDate()).padStart(2, '0');
-            const hh = String(today.getHours()).padStart(2, '0');
-            const min = String(today.getMinutes()).padStart(2, '0');
+    <!-- ==================== TAB 3: AIRPORT SECURITY CHIEF & DAFTAR NAMA ==================== -->
+    <div id="tab-stats" class="tab-content hidden space-y-6">
+      
+      <!-- Top Overview of Airport Security Chief -->
+      <div class="glass-panel rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+        <div>
+          <span class="px-3 py-1 bg-sky-100 text-sky-800 rounded-full text-xs font-bold uppercase tracking-wider">
+            OTORISASI KEAMANAN BANDARA
+          </span>
+          <h2 class="text-2xl font-black text-slate-900 mt-2 tracking-tight flex items-center gap-2">
+            <i class="fa-solid fa-user-shield text-sky-600"></i>
+            Airport Security Chief
+          </h2>
+          <p class="text-slate-600 text-xs sm:text-sm mt-1">
+            Rekapitulasi otorisasi izin pas visitor oleh Airport Security Chief dan rekam jejak nama peminjam terdaftar.
+          </p>
+        </div>
 
-            const tglEl = document.getElementById('inputTanggal');
-            const wktEl = document.getElementById('inputWaktu');
-            if (tglEl && !tglEl.value) tglEl.value = `${yyyy}-${mm}-${dd}`;
-            if (wktEl && !wktEl.value) wktEl.value = `${hh}:${min}`;
+        <!-- 4 Security Chief Cards: Hendrik, Harry Kaunang, Indriyan Musa, Novisye Mumbunan -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="chiefCardsGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
 
-            resizeCanvas();
-        });
+      <!-- DAFTAR NAMA YANG SUDAH DIISI DI HALAMAN SEBELUMNYA -->
+      <div class="glass-panel rounded-3xl p-6 shadow-2xl space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200">
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-address-book text-sky-600"></i>
+              Daftar Nama Peminjam Terdaftar
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Daftar nama peminjam beserta instansi, nomor pas yang dipinjam, dan status peminjaman
+            </p>
+          </div>
+          <span class="text-xs font-bold text-sky-800 bg-sky-100 px-3 py-1 rounded-full" id="borrowerListCount">
+            0 Peminjam
+          </span>
+        </div>
 
-        // --- Logika Menampilkan/Menyembunyikan Bagian (AD, WP, PC, PATROLI, CCTV, SSCP, ACSCP) ---
-        function toggleSections() {
-            const posisi = document.getElementById('posisiTugasSelect').value;
-            const isSpecial = ['AD', 'WP', 'PC'].includes(posisi);
-            const isPatroli = posisi === 'PATROLI';
-            const isCctv = posisi === 'CCTV';
-            const isNoEtd = ['SSCP KEDATANGAN', 'SSCP KEBERANGKATAN', 'ACSCP'].includes(posisi);
+        <!-- List Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5" id="borrowerNamesGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
 
-            const fasStandard = document.getElementById('fasilitas-standard');
-            const fasKhusus = document.getElementById('fasilitas-khusus');
-            const fasPatroli = document.getElementById('fasilitas-patroli');
-            const fasCctv = document.getElementById('fasilitas-cctv');
-            const secDokumen = document.getElementById('section-dokumen');
-            const secArea = document.getElementById('section-area');
-            const badgeFas = document.getElementById('badgeFasilitasInfo');
+    </div>
 
-            // 1. Matikan semua opsi fasilitas
-            [fasStandard, fasKhusus, fasPatroli, fasCctv].forEach(sec => {
-                if(sec) {
-                    sec.classList.add('hidden');
-                    Array.from(sec.querySelectorAll('select')).forEach(el => el.disabled = true);
+  </main>
+
+
+  <!-- ==================== MODAL: DIGITAL VISITOR BADGE POPUP & PRINT ==================== -->
+  <div id="badgeModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-slate-200 overflow-hidden space-y-5">
+      
+      <button onclick="closeBadgeModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-center pb-2">
+        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-100 text-sky-800">
+          <i class="fa-solid fa-circle-check text-emerald-600"></i> PASS VISITOR RESMI
+        </span>
+        <h3 class="text-lg font-black text-slate-900 mt-1">Kartu Pas &amp; QR Code Akses</h3>
+      </div>
+
+      <!-- Printable Area -->
+      <div id="printableBadgeSection" class="visitor-badge-card border border-slate-300">
+        <div class="lanyard-hole"></div>
+
+        <div id="modalHeaderBand" class="px-5 py-3 bg-gradient-to-r from-sky-600 to-indigo-700 text-white font-black">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-shield-halved text-base"></i>
+              <span class="text-xs uppercase">BANDARA INTERNASIONAL</span>
+            </div>
+            <span id="modalPassNumber" class="text-xs font-black font-mono bg-slate-950 text-white px-2 py-0.5 rounded">
+              PAS 21P
+            </span>
+          </div>
+        </div>
+
+        <div class="p-5 space-y-3.5">
+          <div class="flex items-center gap-3">
+            <div class="w-14 h-14 rounded-2xl bg-slate-200 flex items-center justify-center text-slate-600 text-xl font-bold">
+              <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <div class="min-w-0">
+              <h4 id="modalName" class="font-extrabold text-slate-900 text-base truncate">Jack David Nome</h4>
+              <p id="modalCompany" class="text-xs font-bold text-sky-700 truncate">TNI-AU</p>
+              <span id="modalAreaBadge" class="inline-block mt-0.5 text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-sky-100 text-sky-900">
+                ✈️ AREA P (APRON)
+              </span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 p-2.5 bg-slate-50 rounded-xl text-[11px] border border-slate-200">
+            <div>
+              <span class="text-[9px] text-slate-400 uppercase font-bold block">No. Identitas</span>
+              <span id="modalId" class="font-mono font-semibold text-slate-800">KTA TNI 54321</span>
+            </div>
+            <div>
+              <span class="text-[9px] text-slate-400 uppercase font-bold block">Masa Berlaku</span>
+              <span class="font-mono font-semibold text-emerald-700">Tervalidasi</span>
+            </div>
+            <div class="col-span-2">
+              <span class="text-[9px] text-slate-400 uppercase font-bold block">Airport Security Chief</span>
+              <span id="modalChief" class="font-bold text-sky-900">Hendrik</span>
+            </div>
+            <div class="col-span-2">
+              <span class="text-[9px] text-slate-400 uppercase font-bold block">Nomor Pas Terpinjam</span>
+              <span id="modalPassesList" class="font-mono font-bold text-slate-800 truncate block">21P</span>
+            </div>
+            <div class="col-span-2">
+              <span class="text-[9px] text-slate-400 uppercase font-bold block">Kategori Izin</span>
+              <span id="modalCategory" class="text-slate-700 truncate block">Patroli Khusus Apron & Base Ops</span>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between gap-2 pt-1">
+            <div class="text-[9px] text-slate-500">
+              <span class="font-bold text-slate-800 block">Security Pass Bandara</span>
+              Security Checkpoint Verified
+            </div>
+            <div class="p-1 bg-white rounded-lg border border-slate-200">
+              <div id="modalQrCode" class="w-16 h-16"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2 pt-2">
+        <button onclick="window.print()" class="flex-1 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs transition flex items-center justify-center gap-2 shadow-lg">
+          <i class="fa-solid fa-print"></i> Cetak Badge Fisik
+        </button>
+        <button onclick="closeBadgeModal()" class="py-2.5 px-4 rounded-xl border border-slate-300 text-slate-700 font-bold text-xs hover:bg-slate-100">
+          Tutup
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ==================== JAVASCRIPT & GOOGLE APPS SCRIPT INTEGRASI ==================== -->
+  <script>
+    // ============================================================================
+    // Konfigurasi Endpoint Server
+    // ============================================================================
+    const API_URL = "https://script.google.com/macros/s/AKfycbw6Uq-92P0zC_YOUR_DEPLOYMENT_ID/exec";
+
+    // 10 Pas Visitor Resmi Bandara
+    const PASSES_P = ["21P", "22P", "23P", "24P", "25P"];
+    const PASSES_T = ["21T", "22T", "23T", "24T", "25T"];
+    const ALL_10_PASSES = [...PASSES_P, ...PASSES_T];
+
+    // 4 Airport Security Chief Resmi
+    const SECURITY_CHIEFS = [
+      "Hendrik",
+      "Harry Kaunang",
+      "Indriyan Musa",
+      "Novisye Mumbunan"
+    ];
+
+    // State Variables
+    let visitorData = [];
+    let selectedPasses = ["21P"]; // 1 nama bisa memilih 1 sampai 10 pas!
+
+    // Data Awal Sinkronisasi
+    const DEFAULT_RECORDS = [
+      { id: 1, tglPinjam: "2026-10-28 10:00", estimasiKembali: "2026-10-29 10:00", tglKembali: "", nama: "Jack David Nome", instansi: "TNI-AU", identitas: "KTA TNI 54321", phone: "0812-4455-6677", kategoriKunjungan: "Patroli Khusus Apron & Base Ops", areaPas: "P (Apron)", noPas: "21P, 22P", jumlahPas: 2, airportSecurityChief: "Hendrik", status: "Dipinjam" },
+      { id: 2, tglPinjam: "2026-10-28 09:30", estimasiKembali: "2026-10-29 09:30", tglKembali: "", nama: "Kholid Fauzi M", instansi: "POLRI", identitas: "KTA POLRI 88771", phone: "0813-8899-0011", kategoriKunjungan: "Pengamanan Khusus Terminal VIP", areaPas: "T (Terminal)", noPas: "21T", jumlahPas: 1, airportSecurityChief: "Harry Kaunang", status: "Dipinjam" },
+      { id: 3, tglPinjam: "2026-10-27 14:00", estimasiKembali: "2026-10-28 14:00", tglKembali: "2026-10-28 08:15", nama: "Geraldo Wiliem Rotu", instansi: "BRI", identitas: "ID Karyawan BRI 109", phone: "0852-1122-3344", kategoriKunjungan: "Maintenance Mesin ATM Terminal 1 & 2", areaPas: "T (Terminal)", noPas: "22T, 23T", jumlahPas: 2, airportSecurityChief: "Indriyan Musa", status: "Kembali" },
+      { id: 4, tglPinjam: "2026-10-26 11:00", estimasiKembali: "2026-10-27 11:00", tglKembali: "2026-10-27 10:45", nama: "Budi Santoso", instansi: "Telkom", identitas: "ID Teknisi Telkom 44", phone: "0878-5566-7788", kategoriKunjungan: "Perbaikan Kabel Fiber Optik Runway", areaPas: "P (Apron)", noPas: "23P, 24P, 25P", jumlahPas: 3, airportSecurityChief: "Novisye Mumbunan", status: "Kembali" },
+      { id: 5, tglPinjam: "2026-10-25 08:00", estimasiKembali: "2026-10-26 08:00", tglKembali: "2026-10-26 07:30", nama: "Yuddhi Satya C K", instansi: "TNI-AD", identitas: "SIM A 16359811", phone: "0812-7788-9900", kategoriKunjungan: "Pendampingan Tamu Pejabat Daerah", areaPas: "T (Terminal)", noPas: "24T", jumlahPas: 1, airportSecurityChief: "Hendrik", status: "Kembali" },
+      { id: 6, tglPinjam: "2026-10-24 13:00", estimasiKembali: "2026-10-25 13:00", tglKembali: "2026-10-25 12:00", nama: "Andrew Roberto M", instansi: "Customs", identitas: "ID Bea Cukai 881", phone: "0811-2233-4455", kategoriKunjungan: "Inspeksi Kargo & Penindakan", areaPas: "T (Terminal)", noPas: "25T", jumlahPas: 1, airportSecurityChief: "Harry Kaunang", status: "Kembali" }
+    ];
+
+    // Initialization
+    document.addEventListener('DOMContentLoaded', () => {
+      initClock();
+      initLoanTimestamps();
+      loadData();
+      renderPassSlots();
+      updateLiveBadge();
+      renderTable();
+      renderChiefStats();
+
+      if (isApiUrlConfigured()) {
+        syncData();
+      }
+    });
+
+    function isApiUrlConfigured() {
+      return API_URL && API_URL.startsWith('http') && !API_URL.includes('YOUR_DEPLOYMENT_ID');
+    }
+
+    function initClock() {
+      const update = () => {
+        const now = new Date();
+        const str = now.toLocaleTimeString('id-ID', { hour12: false }) + ' WITA';
+        const el = document.getElementById('liveClock');
+        if (el) el.textContent = str;
+      };
+      update();
+      setInterval(update, 1000);
+    }
+
+    // Set Waktu Pinjam Sekarang & Batas Kembali 1x24 Jam
+    function initLoanTimestamps() {
+      const now = new Date();
+      const plus24 = new Date(now.getTime() + (24 * 60 * 60 * 1000));
+
+      const formatDt = (d) => {
+        return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' +
+               d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false }) + ' WITA';
+      };
+
+      const elBorrow = document.getElementById('borrowTimestamp');
+      const elReturn = document.getElementById('returnTimestamp');
+      if (elBorrow) elBorrow.value = formatDt(now);
+      if (elReturn) elReturn.value = formatDt(plus24);
+    }
+
+    function loadData() {
+      const stored = localStorage.getItem('evisitor_records_10pas');
+      if (stored) {
+        try {
+          visitorData = JSON.parse(stored);
+        } catch (e) {
+          visitorData = [...DEFAULT_RECORDS];
+        }
+      } else {
+        visitorData = [...DEFAULT_RECORDS];
+        saveData();
+      }
+    }
+
+    function saveData() {
+      localStorage.setItem('evisitor_records_10pas', JSON.stringify(visitorData));
+      updateCounts();
+    }
+
+    function updateCounts() {
+      const count = visitorData.length;
+      const sideEl = document.getElementById('sideTotalDataCount');
+      if (sideEl) sideEl.textContent = count;
+      const headerLabel = document.getElementById('headerCurrentTabLabel');
+      if (headerLabel && !document.getElementById('tab-data')?.classList.contains('hidden')) {
+        headerLabel.textContent = `Log & Monitoring (${count})`;
+      }
+    }
+
+    // ============================================================================
+    // Kombinasi Sidebar + Hamburger Controls
+    // ============================================================================
+    function openSidebar() {
+      const sidebar = document.getElementById('mainSidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      if (backdrop) {
+        backdrop.classList.remove('hidden');
+        // Force repaint so opacity transition animates cleanly
+        void backdrop.offsetWidth;
+        backdrop.classList.remove('opacity-0', 'pointer-events-none');
+        backdrop.classList.add('opacity-100', 'pointer-events-auto');
+      }
+      if (sidebar) {
+        sidebar.classList.remove('-translate-x-full');
+      }
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeSidebar() {
+      const sidebar = document.getElementById('mainSidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      if (sidebar) {
+        sidebar.classList.add('-translate-x-full');
+      }
+      if (backdrop) {
+        backdrop.classList.remove('opacity-100', 'pointer-events-auto');
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+        // Add hidden after transition finishes so backdrop filter never remains active
+        setTimeout(() => {
+          if (backdrop.classList.contains('opacity-0')) {
+            backdrop.classList.add('hidden');
+          }
+        }, 300);
+      }
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('mainSidebar');
+      if (!sidebar) return;
+      if (sidebar.classList.contains('-translate-x-full')) {
+        openSidebar();
+      } else {
+        closeSidebar();
+      }
+    }
+
+    function navSelectTab(tabId) {
+      switchTab(tabId);
+      closeSidebar();
+    }
+
+    let isWorkspaceWide = false;
+    function toggleWorkspaceMode() {
+      isWorkspaceWide = !isWorkspaceWide;
+      const main = document.querySelector('main');
+      const label = document.getElementById('workspaceToggleLabel');
+      if (isWorkspaceWide) {
+        if (main) {
+          main.classList.remove('max-w-7xl');
+          main.classList.add('max-w-full', 'px-2', 'sm:px-4');
+        }
+        if (label) label.textContent = 'Kembalikan Lebar Normal';
+      } else {
+        if (main) {
+          main.classList.add('max-w-7xl');
+          main.classList.remove('max-w-full', 'px-2', 'sm:px-4');
+        }
+        if (label) label.textContent = 'Mode Area Kerja Luas';
+      }
+      closeSidebar();
+    }
+
+    // Keyboard Accessibility (ESC closes Sidebar and Modals)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeSidebar();
+        closeBadgeModal();
+      }
+    });
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+
+      // Update Sidebar Nav Buttons
+      document.querySelectorAll('.side-tab-btn').forEach(btn => {
+        btn.classList.remove('bg-gradient-to-r', 'from-sky-600', 'to-blue-600', 'text-white', 'shadow-lg', 'font-bold');
+        btn.classList.add('text-slate-300', 'font-semibold');
+      });
+
+      const sideActiveBtn = document.getElementById('side-btn-' + tabId);
+      if (sideActiveBtn) {
+        sideActiveBtn.classList.remove('text-slate-300', 'font-semibold');
+        sideActiveBtn.classList.add('bg-gradient-to-r', 'from-sky-600', 'to-blue-600', 'text-white', 'shadow-lg', 'font-bold');
+      }
+
+      // Update Header Indicator
+      const headerLabel = document.getElementById('headerCurrentTabLabel');
+      if (headerLabel) {
+        if (tabId === 'tab-form') headerLabel.textContent = 'Formulir Peminjaman';
+        else if (tabId === 'tab-data') headerLabel.textContent = `Log & Monitoring (${visitorData.length})`;
+        else if (tabId === 'tab-stats') headerLabel.textContent = 'Airport Security Chief';
+      }
+
+      const target = document.getElementById(tabId);
+      if (target) target.classList.remove('hidden');
+
+      if (tabId === 'tab-data') {
+        renderTable();
+      } else if (tabId === 'tab-stats') {
+        renderChiefStats();
+      }
+    }
+
+    // Ambil Pas yang sedang dipinjam
+    function getCurrentlyOccupiedMap() {
+      const occupied = {};
+      visitorData.forEach(r => {
+        if (r.status === 'Dipinjam') {
+          const passCodes = String(r.noPas || '').split(',').map(s => s.trim().toUpperCase());
+          passCodes.forEach(code => {
+            if (code) occupied[code] = r;
+          });
+        }
+      });
+      return occupied;
+    }
+
+    // Render Slots Pas (Multi-Select 1-10 Pas)
+    function renderPassSlots() {
+      const occupiedMap = getCurrentlyOccupiedMap();
+
+      const gridP = document.getElementById('gridPassP');
+      if (gridP) {
+        gridP.innerHTML = PASSES_P.map(code => createPassSlotBtn(code, occupiedMap[code], 'P')).join('');
+      }
+
+      const gridT = document.getElementById('gridPassT');
+      if (gridT) {
+        gridT.innerHTML = PASSES_T.map(code => createPassSlotBtn(code, occupiedMap[code], 'T')).join('');
+      }
+
+      // Quick bar in Hero
+      const quickBar = document.getElementById('quickPassAvailabilityBar');
+      if (quickBar) {
+        quickBar.innerHTML = ALL_10_PASSES.map(code => {
+          const occ = occupiedMap[code];
+          const isSelected = selectedPasses.includes(code);
+          const isApron = code.endsWith('P');
+
+          return `
+            <div class="p-1.5 rounded-xl border text-center transition ${
+              occ 
+                ? 'bg-rose-950/40 border-rose-800 text-rose-300' 
+                : isSelected
+                  ? 'bg-emerald-950/60 border-emerald-500 text-emerald-300 ring-1 ring-emerald-400'
+                  : isApron
+                    ? 'bg-sky-950/40 border-sky-800 text-sky-300'
+                    : 'bg-amber-950/40 border-amber-800 text-amber-300'
+            }">
+              <div class="font-mono font-bold text-xs">${code}</div>
+              <div class="text-[9px] font-sans opacity-75">${occ ? 'Dipakai' : (isSelected ? 'Terpilih' : 'Tersedia')}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Update Selection Badges
+      const counterBadge = document.getElementById('selectedCounterBadge');
+      if (counterBadge) {
+        counterBadge.textContent = `Terpilih: ${selectedPasses.length} dari 10 Pas`;
+      }
+
+      const summaryText = document.getElementById('selectedPassesSummary');
+      if (summaryText) {
+        summaryText.textContent = selectedPasses.length > 0 ? selectedPasses.join(', ') : '(Belum ada yang dipilih)';
+      }
+    }
+
+    function createPassSlotBtn(code, occupant, type) {
+      const isSelected = selectedPasses.includes(code);
+      const isOccupied = Boolean(occupant);
+
+      let btnClass = "py-2.5 px-1 rounded-xl text-xs font-bold font-mono transition flex flex-col items-center justify-center border select-none ";
+
+      if (isOccupied) {
+        btnClass += "bg-rose-50 border-rose-300 text-rose-700 cursor-not-allowed opacity-80";
+        return `
+          <button type="button" onclick="alert('Pas ${code} sedang dipinjam oleh ${escapeHtml(occupant.nama)} (${escapeHtml(occupant.instansi)}).')" class="${btnClass}">
+            <span class="flex items-center gap-1">${code} <i class="fa-solid fa-lock text-[10px]"></i></span>
+            <span class="text-[9px] font-sans font-normal opacity-80">Dipakai</span>
+          </button>
+        `;
+      }
+
+      if (isSelected) {
+        btnClass += (type === 'P')
+          ? "bg-sky-600 text-white border-sky-700 shadow-md ring-2 ring-sky-400 scale-[1.02]"
+          : "bg-amber-500 text-slate-950 border-amber-600 shadow-md ring-2 ring-amber-300 scale-[1.02]";
+      } else {
+        btnClass += "bg-white text-slate-700 border-slate-300 hover:border-sky-400 hover:bg-slate-50";
+      }
+
+      return `
+        <button type="button" onclick="togglePassSelection('${code}')" class="${btnClass}">
+          <span class="flex items-center gap-1">
+            <i class="fa-regular ${isSelected ? 'fa-square-check text-white' : 'fa-square text-slate-400'} text-xs"></i>
+            ${code}
+          </span>
+          <span class="text-[9px] font-sans font-normal ${isSelected ? 'text-white' : 'text-slate-500'}">
+            ${isSelected ? 'Dipilih' : 'Tersedia'}
+          </span>
+        </button>
+      `;
+    }
+
+    // Toggle multi-select pas
+    function togglePassSelection(code) {
+      const idx = selectedPasses.indexOf(code);
+      if (idx > -1) {
+        if (selectedPasses.length === 1) {
+          alert('Minimal 1 pas visitor harus dipilih!');
+          return;
+        }
+        selectedPasses.splice(idx, 1);
+      } else {
+        if (selectedPasses.length >= 10) {
+          alert('Maksimal peminjaman adalah 10 pas visitor!');
+          return;
+        }
+        selectedPasses.push(code);
+      }
+
+      renderPassSlots();
+      updateLiveBadge();
+    }
+
+    function quickSelectAll() {
+      const occupiedMap = getCurrentlyOccupiedMap();
+      const available = ALL_10_PASSES.filter(code => !occupiedMap[code]);
+      if (available.length === 0) {
+        alert('Tidak ada pas yang tersedia saat ini.');
+        return;
+      }
+      selectedPasses = [...available];
+      renderPassSlots();
+      updateLiveBadge();
+    }
+
+    function quickSelectApron() {
+      const occupiedMap = getCurrentlyOccupiedMap();
+      const availableApron = PASSES_P.filter(code => !occupiedMap[code]);
+      availableApron.forEach(c => {
+        if (!selectedPasses.includes(c)) selectedPasses.push(c);
+      });
+      renderPassSlots();
+      updateLiveBadge();
+    }
+
+    function quickSelectTerminal() {
+      const occupiedMap = getCurrentlyOccupiedMap();
+      const availableTerminal = PASSES_T.filter(code => !occupiedMap[code]);
+      availableTerminal.forEach(c => {
+        if (!selectedPasses.includes(c)) selectedPasses.push(c);
+      });
+      renderPassSlots();
+      updateLiveBadge();
+    }
+
+    function clearSelectedPasses() {
+      const occupiedMap = getCurrentlyOccupiedMap();
+      const firstAvailable = ALL_10_PASSES.find(c => !occupiedMap[c]) || '21P';
+      selectedPasses = [firstAvailable];
+      renderPassSlots();
+      updateLiveBadge();
+    }
+
+    // Live Badge Preview
+    function updateLiveBadge() {
+      const name = document.getElementById('borrowerName')?.value.trim() || 'Jack David Nome';
+      const company = document.getElementById('borrowerCompany')?.value.trim() || 'TNI-AU';
+      const idNum = document.getElementById('borrowerId')?.value.trim() || 'KTA TNI 54321';
+      const chief = document.getElementById('securityChief')?.value || 'Hendrik';
+      const category = document.getElementById('accessCategory')?.value.trim() || 'Patroli Khusus Apron & Base Ops';
+
+      const passListStr = selectedPasses.join(', ');
+      const hasApron = selectedPasses.some(p => p.endsWith('P'));
+      const hasTerminal = selectedPasses.some(p => p.endsWith('T'));
+
+      let areaPillText = "✈️ AREA P (APRON)";
+      if (hasApron && hasTerminal) {
+        areaPillText = "✈️ APRON & 🏢 TERMINAL";
+      } else if (hasTerminal) {
+        areaPillText = "🏢 AREA T (TERMINAL)";
+      }
+
+      document.getElementById('previewName').textContent = name;
+      document.getElementById('previewCompany').textContent = company;
+      document.getElementById('previewIdNumber').textContent = idNum;
+      document.getElementById('previewSecurityChief').textContent = chief;
+      document.getElementById('previewCategory').textContent = category;
+      document.getElementById('previewPassListText').textContent = `${passListStr} (${selectedPasses.length} Pas)`;
+      document.getElementById('badgePassNumberTag').textContent = selectedPasses.length === 1 ? `PAS ${selectedPasses[0]}` : `PAS: ${passListStr}`;
+
+      const pill = document.getElementById('previewPassTypePill');
+      if (pill) pill.textContent = areaPillText;
+
+      const tokenStr = `EV-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${selectedPasses.join('-')}`;
+      document.getElementById('previewTokenCode').textContent = tokenStr;
+
+      // Generate Live QR Code
+      const qrPayload = JSON.stringify({
+        passes: selectedPasses,
+        count: selectedPasses.length,
+        visitor: name,
+        company: company,
+        chief: chief,
+        token: tokenStr
+      });
+
+      renderQrCode('liveBadgeQrCode', qrPayload, 80);
+    }
+
+    function renderQrCode(elementId, text, size = 80) {
+      const container = document.getElementById(elementId);
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (typeof QRCode !== 'undefined') {
+        try {
+          new QRCode(container, {
+            text: text,
+            width: size,
+            height: size,
+            colorDark: "#0f172a",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.M
+          });
+          return;
+        } catch (e) {
+          console.warn("QR Error:", e);
+        }
+      }
+
+      container.innerHTML = `
+        <div style="width:${size}px; height:${size}px; display:flex; align-items:center; justify-content:center; background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px;">
+          <i class="fa-solid fa-qrcode text-slate-800 text-2xl"></i>
+        </div>
+      `;
+    }
+
+    // Submit Form
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+
+      if (selectedPasses.length === 0) {
+        alert('Pilih minimal 1 pas visitor!');
+        return;
+      }
+
+      const occupiedMap = getCurrentlyOccupiedMap();
+      const occupiedSelected = selectedPasses.filter(code => occupiedMap[code]);
+      if (occupiedSelected.length > 0) {
+        alert(`Pas [${occupiedSelected.join(', ')}] sedang dipinjam! Silakan hapus pas tersebut dari pilihan.`);
+        return;
+      }
+
+      const name = document.getElementById('borrowerName').value.trim();
+      const phone = document.getElementById('borrowerPhone').value.trim();
+      const idNum = document.getElementById('borrowerId').value.trim();
+      const company = document.getElementById('borrowerCompany').value.trim();
+      const category = document.getElementById('accessCategory').value.trim();
+      const chief = document.getElementById('securityChief').value;
+      const notes = document.getElementById('loanNotes').value.trim();
+
+      const now = new Date();
+      const plus24 = new Date(now.getTime() + (24 * 60 * 60 * 1000));
+      const waktuPinjamStr = now.toISOString().slice(0, 10) + ' ' + now.toLocaleTimeString('id-ID', { hour12: false });
+      const estimasiKembaliStr = plus24.toISOString().slice(0, 10) + ' ' + plus24.toLocaleTimeString('id-ID', { hour12: false });
+
+      const hasApron = selectedPasses.some(p => p.endsWith('P'));
+      const hasTerminal = selectedPasses.some(p => p.endsWith('T'));
+      const areaDisplay = hasApron && hasTerminal ? 'P (Apron) & T (Terminal)' : (hasApron ? 'P (Apron)' : 'T (Terminal)');
+
+      const submitBtn = document.getElementById('submitBtn');
+      const submitText = document.getElementById('submitBtnText');
+      if (submitBtn) submitBtn.disabled = true;
+      if (submitText) submitText.textContent = "Menerbitkan Izin...";
+
+      const newRecord = {
+        id: visitorData.length + 1,
+        tglPinjam: waktuPinjamStr,
+        estimasiKembali: estimasiKembaliStr,
+        tglKembali: "",
+        nama: name,
+        phone: phone,
+        identitas: `${idNum} (Tel: ${phone})`,
+        instansi: company,
+        kategoriKunjungan: category,
+        areaPas: areaDisplay,
+        noPas: selectedPasses.join(', '),
+        jumlahPas: selectedPasses.length,
+        airportSecurityChief: chief,
+        keterangan: notes || `${selectedPasses.length} pas dipinjam`,
+        status: "Dipinjam"
+      };
+
+      // Simpan ke Google Apps Script jika URL terpasang
+      if (isApiUrlConfigured()) {
+        try {
+          const payload = {
+            action: 'createLoan',
+            nama: name,
+            phone: phone,
+            identitas: idNum,
+            instansi: company,
+            kategoriKunjungan: category,
+            noPasList: selectedPasses,
+            noPas: selectedPasses.join(', '),
+            airportSecurityChief: chief,
+            keterangan: notes
+          };
+
+          await fetch(API_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          });
+        } catch (err) {
+          console.warn("GAS Post warning:", err);
+        }
+      }
+
+      visitorData.unshift(newRecord);
+      saveData();
+      renderPassSlots();
+
+      if (submitBtn) submitBtn.disabled = false;
+      if (submitText) submitText.textContent = "Terbitkan Izin & Pinjam Pas";
+
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
+      }
+
+      openBadgeModalWithRecord(newRecord);
+
+      // Reset
+      document.getElementById('loanForm').reset();
+      initLoanTimestamps();
+      selectedPasses = ["21P"];
+      renderPassSlots();
+      updateLiveBadge();
+    }
+
+    // Modal Badge Display
+    function openBadgeModalDirect() {
+      const rec = {
+        nama: document.getElementById('borrowerName')?.value || 'Jack David Nome',
+        instansi: document.getElementById('borrowerCompany')?.value || 'TNI-AU',
+        identitas: document.getElementById('borrowerId')?.value || 'KTA TNI 54321',
+        noPas: selectedPasses.join(', '),
+        jumlahPas: selectedPasses.length,
+        kategoriKunjungan: document.getElementById('accessCategory')?.value || 'Patroli Khusus Apron & Base Ops',
+        airportSecurityChief: document.getElementById('securityChief')?.value || 'Hendrik',
+        tglPinjam: new Date().toLocaleDateString('id-ID')
+      };
+      openBadgeModalWithRecord(rec);
+    }
+
+    function openBadgeModalWithRecord(rec) {
+      const modal = document.getElementById('badgeModal');
+      if (!modal) return;
+
+      document.getElementById('modalName').textContent = rec.nama;
+      document.getElementById('modalCompany').textContent = rec.instansi;
+      document.getElementById('modalId').textContent = rec.identitas;
+      document.getElementById('modalChief').textContent = rec.airportSecurityChief;
+      document.getElementById('modalPassesList').textContent = `${rec.noPas} (${rec.jumlahPas || 1} Pas)`;
+      document.getElementById('modalCategory').textContent = rec.kategoriKunjungan || '-';
+      document.getElementById('modalPassNumber').textContent = `PAS: ${rec.noPas}`;
+
+      const qrPayload = JSON.stringify({
+        passes: rec.noPas,
+        visitor: rec.nama,
+        company: rec.instansi,
+        chief: rec.airportSecurityChief
+      });
+
+      renderQrCode('modalQrCode', qrPayload, 64);
+      modal.classList.remove('hidden');
+    }
+
+    function closeBadgeModal() {
+      const modal = document.getElementById('badgeModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function printActiveBadge() {
+      openBadgeModalDirect();
+      setTimeout(() => window.print(), 300);
+    }
+
+    function copyPassDetails() {
+      const name = document.getElementById('previewName')?.textContent;
+      const company = document.getElementById('previewCompany')?.textContent;
+      const passTag = document.getElementById('badgePassNumberTag')?.textContent;
+      const chief = document.getElementById('previewSecurityChief')?.textContent;
+      const text = `E-VISITOR AIRPORT PASS\nNama: ${name}\nInstansi: ${company}\n${passTag}\nAirport Security Chief: ${chief}`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Informasi Pas berhasil disalin ke clipboard!');
+      }).catch(() => {
+        alert(text);
+      });
+    }
+
+    // Preset Loaders
+    function loadSampleDataTni() {
+      document.getElementById('borrowerName').value = "Kapten Inf. Sigit Wibowo";
+      document.getElementById('borrowerPhone').value = "0812-9988-7766";
+      document.getElementById('borrowerId').value = "KTA TNI-AU 541098";
+      document.getElementById('borrowerCompany').value = "TNI-AU";
+      document.getElementById('accessCategory').value = "Pengamanan & Koordinasi VIP Apron Base Ops";
+      document.getElementById('securityChief').value = "Hendrik";
+      selectedPasses = ["21P", "22P", "23P"];
+      renderPassSlots();
+      updateLiveBadge();
+    }
+
+    function loadSampleDataPolri() {
+      document.getElementById('borrowerName').value = "Ipda Hendra Setiawan";
+      document.getElementById('borrowerPhone').value = "0813-7766-5544";
+      document.getElementById('borrowerId').value = "KTA POLRI 890123";
+      document.getElementById('borrowerCompany').value = "POLRI";
+      document.getElementById('accessCategory').value = "Sterilisasi dan Pengecekan Keamanan Terminal 1A & 2";
+      document.getElementById('securityChief').value = "Harry Kaunang";
+      selectedPasses = ["21T", "22T"];
+      renderPassSlots();
+      updateLiveBadge();
+    }
+
+    // Render Table
+    function renderTable() {
+      const tbody = document.getElementById('visitorTableBody');
+      if (!tbody) return;
+
+      const search = (document.getElementById('tableSearchInput')?.value || '').toLowerCase();
+      const areaFilter = document.getElementById('filterArea')?.value || 'ALL';
+      const statusFilter = document.getElementById('filterStatus')?.value || 'ALL';
+      const chiefFilter = document.getElementById('filterChief')?.value || 'ALL';
+
+      const filtered = visitorData.filter(item => {
+        const matchSearch = !search ||
+          item.nama.toLowerCase().includes(search) ||
+          item.instansi.toLowerCase().includes(search) ||
+          item.identitas.toLowerCase().includes(search) ||
+          item.kategoriKunjungan.toLowerCase().includes(search) ||
+          item.noPas.toLowerCase().includes(search);
+
+        const hasP = item.noPas.includes('P');
+        const hasT = item.noPas.includes('T');
+
+        const matchArea = (areaFilter === 'ALL') || (areaFilter === 'P' && hasP) || (areaFilter === 'T' && hasT);
+        const matchStatus = (statusFilter === 'ALL') || (item.status === statusFilter);
+        const matchChief = (chiefFilter === 'ALL') || (item.airportSecurityChief === chiefFilter);
+
+        return matchSearch && matchArea && matchStatus && matchChief;
+      });
+
+      const showingEl = document.getElementById('showingCount');
+      const totalEl = document.getElementById('totalRecordCount');
+      if (showingEl) showingEl.textContent = filtered.length;
+      if (totalEl) totalEl.textContent = visitorData.length;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9" class="py-8 text-center text-slate-400">
+              <i class="fa-solid fa-folder-open text-3xl mb-2 block"></i>
+              Tidak ditemukan data peminjaman yang cocok dengan filter pencarian.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(row => {
+        const isDipinjam = row.status === 'Dipinjam';
+
+        return `
+          <tr class="hover:bg-slate-50 transition duration-150">
+            <td class="py-3 px-4 text-center font-mono text-slate-500 font-bold">${row.id}</td>
+
+            <td class="py-3 px-4">
+              <div class="font-extrabold text-slate-900">${escapeHtml(row.nama)}</div>
+              <div class="text-[11px] text-sky-700 font-semibold">${escapeHtml(row.instansi)}</div>
+            </td>
+
+            <td class="py-3 px-4">
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black font-mono shadow-sm bg-sky-100 text-sky-950 border border-sky-300">
+                <i class="fa-solid fa-id-badge text-sky-600"></i>
+                PAS ${row.noPas}
+              </div>
+            </td>
+
+            <td class="py-3 px-4 max-w-xs">
+              <div class="truncate text-[11px] font-medium text-slate-700" title="${escapeHtml(row.kategoriKunjungan)}">
+                ${escapeHtml(row.kategoriKunjungan)}
+              </div>
+            </td>
+
+            <td class="py-3 px-4 font-mono text-[11px] text-slate-600">
+              ${escapeHtml(row.identitas || '-')}
+            </td>
+
+            <td class="py-3 px-4 font-mono text-[11px]">
+              <div class="text-slate-800 font-semibold">${row.tglPinjam || '-'}</div>
+              <div class="text-slate-500 text-[10px]">
+                Kembali: ${row.tglKembali || `<span class="text-amber-600 font-bold">${row.estimasiKembali || 'Aktif'}</span>`}
+              </div>
+            </td>
+
+            <td class="py-3 px-4 font-semibold text-slate-800 text-[11px]">
+              <span class="text-sky-950 font-bold flex items-center gap-1">
+                <i class="fa-solid fa-user-shield text-sky-600 text-xs"></i>
+                ${escapeHtml(row.airportSecurityChief || '-')}
+              </span>
+            </td>
+
+            <td class="py-3 px-4 text-center">
+              ${
+                isDipinjam 
+                  ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300 animate-pulse">
+                      <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Dipinjam
+                     </span>`
+                  : `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                      <i class="fa-solid fa-check text-[9px]"></i> Kembali
+                     </span>`
+              }
+            </td>
+
+            <td class="py-3 px-4 text-center">
+              <div class="flex items-center justify-center gap-1.5">
+                <button onclick="viewBadgeFromTable(${row.id})" class="p-1.5 rounded-lg bg-slate-100 hover:bg-sky-100 hover:text-sky-700 text-slate-600 transition" title="Lihat Kartu Pas">
+                  <i class="fa-solid fa-id-card"></i>
+                </button>
+                ${
+                  isDipinjam 
+                    ? `<button onclick="returnPass(${row.id})" class="px-2 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] transition shadow" title="Kembalikan Pas Sekarang">
+                        Kembalikan
+                       </button>`
+                    : `<button disabled class="px-2 py-1 rounded-lg bg-slate-100 text-slate-400 text-[10px] cursor-default">
+                        Selesai
+                       </button>`
                 }
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function applyTableFilters() {
+      renderTable();
+    }
+
+    function viewBadgeFromTable(id) {
+      const rec = visitorData.find(r => r.id === id);
+      if (rec) openBadgeModalWithRecord(rec);
+    }
+
+    async function returnPass(id) {
+      const rec = visitorData.find(r => r.id === id);
+      if (!rec) return;
+
+      const nowFormatted = new Date().toISOString().slice(0, 10) + ' ' + new Date().toLocaleTimeString('id-ID', { hour12: false });
+      if (confirm(`Konfirmasi pengembalian Pas [${rec.noPas}] atas nama ${rec.nama}?`)) {
+        
+        if (isApiUrlConfigured()) {
+          try {
+            await fetch(API_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({ action: 'returnPass', id: rec.id, noPas: rec.noPas })
             });
-
-            // 2. Aktifkan fasilitas sesuai Posisi
-            if (isSpecial) {
-                fasKhusus.classList.remove('hidden');
-                Array.from(fasKhusus.querySelectorAll('select')).forEach(el => el.disabled = false);
-                if (badgeFas) badgeFas.innerText = 'Pos Khusus (HT)';
-            } else if (isPatroli) {
-                fasPatroli.classList.remove('hidden');
-                Array.from(fasPatroli.querySelectorAll('select')).forEach(el => el.disabled = false);
-                if (badgeFas) badgeFas.innerText = 'Sarana Patroli (5 Item)';
-            } else if (isCctv) {
-                fasCctv.classList.remove('hidden');
-                Array.from(fasCctv.querySelectorAll('select')).forEach(el => el.disabled = false);
-                if (badgeFas) badgeFas.innerText = 'Sistem CCTV (6 Item)';
-            } else {
-                fasStandard.classList.remove('hidden');
-                Array.from(fasStandard.querySelectorAll('select')).forEach(el => el.disabled = false);
-                
-                const divEtd = document.getElementById('div-fasilitas-etd');
-                const selectEtd = document.getElementById('select-fasilitas-etd');
-                if (isNoEtd) {
-                    divEtd.classList.add('hidden');
-                    selectEtd.disabled = true; // Tidak masuk hitungan
-                    if (badgeFas) badgeFas.innerText = 'Standar Pos Non-ETD (8 Item)';
-                } else {
-                    divEtd.classList.remove('hidden');
-                    selectEtd.disabled = false;
-                    if (badgeFas) badgeFas.innerText = 'Standar Lengkap (9 Item)';
-                }
-            }
-
-            // 3. Sembunyikan Dokumen dan Area untuk AD, WP, PC, PATROLI, dan CCTV
-            if (isSpecial || isPatroli || isCctv) {
-                secDokumen.classList.add('hidden');
-                Array.from(secDokumen.querySelectorAll('select')).forEach(el => el.disabled = true);
-
-                secArea.classList.add('hidden');
-                Array.from(secArea.querySelectorAll('select')).forEach(el => el.disabled = true);
-            } else {
-                secDokumen.classList.remove('hidden');
-                Array.from(secDokumen.querySelectorAll('select')).forEach(el => el.disabled = false);
-
-                secArea.classList.remove('hidden');
-                Array.from(secArea.querySelectorAll('select')).forEach(el => el.disabled = false);
-            }
-            
-            hitungTotal();
+          } catch (e) {
+            console.warn("GAS return error:", e);
+          }
         }
 
-        // --- Logika Perhitungan Nilai Rata-rata ---
-        function hitungTotal() {
-            // Hitung Personel
-            const personelItems = document.querySelectorAll('.nilai-personel:not(:disabled)');
-            let sumPersonel = 0;
-            personelItems.forEach(item => {
-                if(item.value !== "") sumPersonel += parseInt(item.value);
-            });
-            const rataPersonel = personelItems.length > 0 ? (sumPersonel / personelItems.length) : 0;
-            document.getElementById('totalPersonelText').innerText = sumPersonel;
-            document.getElementById('rataPersonelText').innerText = rataPersonel.toFixed(2);
+        rec.status = 'Kembali';
+        rec.tglKembali = nowFormatted;
+        saveData();
+        renderTable();
+        renderPassSlots();
+        renderChiefStats();
+        alert(`Pas [${rec.noPas}] berhasil dikembalikan ke status Tersedia.`);
+      }
+    }
 
-            // Hitung Fasilitas
-            const fasItems = document.querySelectorAll('.nilai-fasilitas:not(:disabled)');
-            let sumFas = 0;
-            fasItems.forEach(item => {
-                if(item.value !== "") sumFas += parseInt(item.value);
-            });
-            const rataFasilitas = fasItems.length > 0 ? (sumFas / fasItems.length) : 0; 
-            document.getElementById('totalFasilitasText').innerText = sumFas;
-            document.getElementById('rataFasilitasText').innerText = rataFasilitas.toFixed(2);
+    // STATISTIK: AIRPORT SECURITY CHIEF & DAFTAR NAMA PEMINJAM
+    function renderChiefStats() {
+      const chiefCounts = {
+        "Hendrik": 0,
+        "Harry Kaunang": 0,
+        "Indriyan Musa": 0,
+        "Novisye Mumbunan": 0
+      };
 
-            // Hitung Dokumen
-            const dokItems = document.querySelectorAll('.nilai-dokumen:not(:disabled)');
-            let sumDok = 0;
-            dokItems.forEach(item => {
-                if(item.value !== "") sumDok += parseInt(item.value);
-            });
-            const rataDok = dokItems.length > 0 ? (sumDok / dokItems.length) : 0;
-            document.getElementById('totalDokumenText').innerText = sumDok;
-            document.getElementById('rataDokumenText').innerText = rataDok.toFixed(2);
-
-            // Hitung Area
-            const areaItems = document.querySelectorAll('.nilai-area:not(:disabled)');
-            let sumArea = 0;
-            areaItems.forEach(item => {
-                if(item.value !== "") sumArea += parseInt(item.value);
-            });
-            const rataArea = areaItems.length > 0 ? (sumArea / areaItems.length) : 0;
-            document.getElementById('totalAreaText').innerText = sumArea;
-            document.getElementById('rataAreaText').innerText = rataArea.toFixed(2);
-
-            // Hitung Rata-rata Keseluruhan
-            let totalAverages = 0;
-            let sectionCount = 0;
-            
-            if (personelItems.length > 0) { totalAverages += rataPersonel; sectionCount++; }
-            if (fasItems.length > 0) { totalAverages += rataFasilitas; sectionCount++; }
-            if (dokItems.length > 0) { totalAverages += rataDok; sectionCount++; }
-            if (areaItems.length > 0) { totalAverages += rataArea; sectionCount++; }
-            
-            const rataKeseluruhan = sectionCount > 0 ? (totalAverages / sectionCount) : 0;
-            const formatted = rataKeseluruhan.toFixed(2);
-            document.getElementById('rataKeseluruhanText').innerText = formatted;
-
-            // Update Badge Status
-            const badge = document.getElementById('badgeStatusKesiapan');
-            if (rataKeseluruhan >= 85) {
-                badge.innerText = 'SIAP OPERASIONAL';
-                badge.className = 'block text-[11px] font-bold mt-1 text-green-700';
-            } else if (rataKeseluruhan >= 70) {
-                badge.innerText = 'CATATAN MINOR';
-                badge.className = 'block text-[11px] font-bold mt-1 text-amber-700';
-            } else {
-                badge.innerText = 'TIDAK MEMENUHI';
-                badge.className = 'block text-[11px] font-bold mt-1 text-red-600';
-            }
+      visitorData.forEach(r => {
+        const chief = r.airportSecurityChief || "Hendrik";
+        if (chiefCounts[chief] !== undefined) {
+          chiefCounts[chief] += (r.jumlahPas || 1);
+        } else {
+          chiefCounts["Hendrik"] += (r.jumlahPas || 1);
         }
+      });
 
-        // --- Logika Kanvas Tanda Tangan Digital ---
-        const canvas = document.getElementById('signature-pad');
-        const ctx = canvas.getContext('2d');
-        let isDrawing = false;
-        let isSigned = false;
+      const chiefCardsGrid = document.getElementById('chiefCardsGrid');
+      if (chiefCardsGrid) {
+        chiefCardsGrid.innerHTML = SECURITY_CHIEFS.map(name => {
+          const count = chiefCounts[name] || 0;
+          return `
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center gap-3.5 shadow-sm hover:border-sky-300 transition">
+              <div class="w-12 h-12 rounded-xl bg-sky-600 text-white flex items-center justify-center text-xl shadow">
+                <i class="fa-solid fa-user-shield"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="text-[10px] font-bold text-sky-800 uppercase tracking-wider">Airport Security Chief</div>
+                <h4 class="text-sm font-black text-slate-900 truncate">${name}</h4>
+                <div class="text-xs text-slate-500 mt-0.5">
+                  <strong class="text-sky-700 font-bold">${count}</strong> Pas Diotorisasi
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
 
-        function resizeCanvas() {
-            const rect = canvas.getBoundingClientRect();
-            // Rasio DPI layar untuk ketajaman visual di perangkat mobile
-            const dpr = window.devicePixelRatio || 1;
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
-            ctx.scale(dpr, dpr);
-            ctx.lineWidth = 2.2;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            ctx.strokeStyle = '#0f172a';
+      // DAFTAR NAMA YANG SUDAH DIISI DI HALAMAN SEBELUMNYA
+      const borrowerNamesGrid = document.getElementById('borrowerNamesGrid');
+      const borrowerListCount = document.getElementById('borrowerListCount');
+
+      if (borrowerListCount) {
+        borrowerListCount.textContent = `${visitorData.length} Peminjam Terdaftar`;
+      }
+
+      if (borrowerNamesGrid) {
+        borrowerNamesGrid.innerHTML = visitorData.map(r => {
+          const isDipinjam = (r.status === 'Dipinjam');
+
+          return `
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-sky-300 transition space-y-2.5">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <h5 class="text-xs font-black text-slate-900">${escapeHtml(r.nama)}</h5>
+                  <p class="text-[11px] font-bold text-sky-700">${escapeHtml(r.instansi)}</p>
+                </div>
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-black font-mono bg-sky-100 text-sky-900 border border-sky-300">
+                  ${r.noPas}
+                </span>
+              </div>
+
+              <div class="text-[11px] text-slate-600 line-clamp-1">
+                <i class="fa-solid fa-map-pin mr-1 text-sky-600"></i> ${escapeHtml(r.kategoriKunjungan)}
+              </div>
+
+              <div class="text-[10px] text-slate-500">
+                <span class="block">Otorisasi: <strong class="text-slate-700">${escapeHtml(r.airportSecurityChief || 'Hendrik')}</strong></span>
+                <span class="block">Waktu: ${r.tglPinjam}</span>
+              </div>
+
+              <div class="flex items-center justify-between pt-2 border-t border-slate-200 text-[10px]">
+                <span class="text-slate-400">ID: #${r.id}</span>
+                <span class="font-bold ${isDipinjam ? 'text-amber-600' : 'text-emerald-600'}">
+                  ${isDipinjam ? '● Dipinjam' : '✓ Sudah Kembali'}
+                </span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    // Cloud Sync
+    async function syncData() {
+      if (!isApiUrlConfigured()) {
+        alert('Untuk mengaktifkan sinkronisasi otomatis, silakan pasang URL Web App Anda pada baris kode:\nconst API_URL = "https://script.google.com/macros/s/.../exec";');
+        return;
+      }
+
+      const syncIcon = document.getElementById('syncIcon');
+      if (syncIcon) syncIcon.classList.add('fa-spin');
+
+      try {
+        const res = await fetch(`${API_URL}?action=getRecords`);
+        const json = await res.json();
+
+        if (json && json.status === 'success' && Array.isArray(json.records)) {
+          if (json.records.length > 0) {
+            visitorData = json.records;
+            saveData();
+            renderTable();
+            renderPassSlots();
+            renderChiefStats();
+            alert(`Berhasil sinkronisasi ${json.records.length} data dari Google Sheets!`);
+          }
         }
-        window.addEventListener('resize', resizeCanvas);
+      } catch (err) {
+        console.warn("GAS fetch warning:", err);
+      } finally {
+        if (syncIcon) syncIcon.classList.remove('fa-spin');
+      }
+    }
 
-        function getCanvasCoordinates(e) {
-            const rect = canvas.getBoundingClientRect();
-            let clientX, clientY;
-            if (e.touches && e.touches.length > 0) {
-                clientX = e.touches[0].clientX;
-                clientY = e.touches[0].clientY;
-            } else {
-                clientX = e.clientX;
-                clientY = e.clientY;
-            }
-            return {
-                x: clientX - rect.left,
-                y: clientY - rect.top
-            };
-        }
+    function exportToCsv() {
+      const headers = ["ID", "Waktu Pinjam", "Estimasi Kembali", "Waktu Kembali", "Nama Peminjam", "Instansi", "Identitas", "Area Pas", "Nomor Pas", "Kategori Kunjungan", "Airport Security Chief", "Status"];
+      const rows = visitorData.map(r => [
+        r.id,
+        `"${r.tglPinjam}"`,
+        `"${r.estimasiKembali || '-'}"`,
+        `"${r.tglKembali || '-'}"`,
+        `"${r.nama}"`,
+        `"${r.instansi}"`,
+        `"${r.identitas}"`,
+        `"${r.areaPas}"`,
+        `"${r.noPas}"`,
+        `"${r.kategoriKunjungan}"`,
+        `"${r.airportSecurityChief}"`,
+        `"${r.status}"`
+      ]);
 
-        function startDrawing(e) {
-            isDrawing = true;
-            isSigned = true;
-            updateTtdStatus(true);
-            const pos = getCanvasCoordinates(e);
-            ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y);
-        }
+      const csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `EVisitor_10Pas_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
 
-        function draw(e) {
-            if (!isDrawing) return;
-            const pos = getCanvasCoordinates(e);
-            ctx.lineTo(pos.x, pos.y);
-            ctx.stroke();
-        }
-
-        function stopDrawing() {
-            if (isDrawing) {
-                isDrawing = false;
-                ctx.closePath();
-            }
-        }
-
-        function clearSignature() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            isSigned = false;
-            updateTtdStatus(false);
-        }
-
-        function updateTtdStatus(signed) {
-            const el = document.getElementById('statusTtd');
-            if (signed) {
-                el.innerText = 'Tanda tangan terisi ✓';
-                el.className = 'text-xs font-semibold text-green-700';
-            } else {
-                el.innerText = 'Belum ditandatangani';
-                el.className = 'text-xs font-medium text-gray-400';
-            }
-        }
-
-        // Mouse Events
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', draw);
-        window.addEventListener('mouseup', stopDrawing);
-
-        // Touch Events (Smartphone / Tablet)
-        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e); }, { passive: false });
-        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, { passive: false });
-        canvas.addEventListener('touchend', (e) => { e.preventDefault(); stopDrawing(); }, { passive: false });
-
-        document.getElementById('clear-signature').addEventListener('click', clearSignature);
-
-        // --- Logika Submit Data Formulir ---
-        const form = document.getElementById('pengawasanForm');
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            // Validasi kelengkapan form bawaan HTML5
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            // Validasi Tanda Tangan
-            if (!isSigned) {
-                alert('Tanda tangan pengawas wajib diisi sebelum mengirimkan data!');
-                document.getElementById('signature-pad').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;
-            }
-
-            setSubmittingState(true);
-
-            // Ekstrak nilai formulir
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-
-            // Tambahkan metrik kalkulasi skor & gambar TTD Base64
-            data.totalPersonel = document.getElementById('totalPersonelText').innerText;
-            data.rataPersonel = document.getElementById('rataPersonelText').innerText;
-            data.totalFasilitas = document.getElementById('totalFasilitasText').innerText;
-            data.rataFasilitas = document.getElementById('rataFasilitasText').innerText;
-            data.totalDokumen = document.getElementById('totalDokumenText').innerText;
-            data.rataDokumen = document.getElementById('rataDokumenText').innerText;
-            data.totalArea = document.getElementById('totalAreaText').innerText;
-            data.rataArea = document.getElementById('rataAreaText').innerText;
-            data.rataKeseluruhan = document.getElementById('rataKeseluruhanText').innerText;
-            data.signatureDataUrl = canvas.toDataURL('image/png');
-
-            try {
-                // Skenario 1: Berjalan di dalam lingkungan Google Apps Script Web App
-                if (typeof google !== 'undefined' && google.script && google.script.run) {
-                    google.script.run
-                        .withSuccessHandler((response) => {
-                            if (response && response.success) {
-                                handleSubmissionSuccess(data, response);
-                            } else {
-                                handleSubmissionError(response ? response.message : 'Gagal menyimpan');
-                            }
-                        })
-                        .withFailureHandler((error) => {
-                            handleSubmissionError(error.message || error.toString());
-                        })
-                        .simpanKesiapan(data);
-                    return;
-                }
-
-                // Skenario 2: Berjalan di luar (Standalone Web Page via fetch ke SCRIPT_URL)
-                if (!SCRIPT_URL || SCRIPT_URL.includes('https://script.google.com/macros/s/AKfycbyimjszG_pq6LoXtpLi4eoSIXdmLPk2Hpmbo9ZhAq4xGJuXXgV2PaiqgLfqC7D6n8fCkg/exec')) {
-                    // Mode Demo Lokal / Uji Coba Offline
-                    await new Promise(r => setTimeout(r, 1200));
-                    handleSubmissionSuccess(data, {
-                        success: true,
-                        status: parseFloat(data.rataKeseluruhan) >= 85 ? 'MEMENUHI / SIAP OPERASI' : 'CATATAN'
-                    });
-                    return;
-                }
-
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(data),
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-                });
-
-                const result = await response.json();
-                if (result.success) {
-                    handleSubmissionSuccess(data, result);
-                } else {
-                    handleSubmissionError(result.message || 'Terjadi kesalahan pada server Apps Script');
-                }
-
-            } catch (err) {
-                handleSubmissionError('Gagal menghubungkan ke server Google: ' + err.toString());
-            }
-        });
-
-        function setSubmittingState(isSubmitting) {
-            const btn = document.getElementById('submitBtn');
-            const icon = document.getElementById('btnIcon');
-            const spinner = document.getElementById('btnSpinner');
-            const text = document.getElementById('btnText');
-
-            if (isSubmitting) {
-                btn.disabled = true;
-                btn.classList.add('opacity-75', 'cursor-not-allowed');
-                icon.classList.add('hidden');
-                spinner.classList.remove('hidden');
-                text.innerText = 'Menyimpan ke Spreadsheet...';
-            } else {
-                btn.disabled = false;
-                btn.classList.remove('opacity-75', 'cursor-not-allowed');
-                icon.classList.remove('hidden');
-                spinner.classList.add('hidden');
-                text.innerText = 'Kirim Data Checklist';
-            }
-        }
-
-        function handleSubmissionSuccess(data, result) {
-            setSubmittingState(false);
-            
-            // Isi rangkuman sukses
-            document.getElementById('succPosisi').innerText = data.posisiTugas || '-';
-            document.getElementById('succNama').innerText = data.nama || '-';
-            document.getElementById('succSkor').innerText = data.rataKeseluruhan || '0.00';
-            document.getElementById('succStatus').innerText = result.status || 'MEMENUHI';
-
-            form.style.display = 'none';
-            document.getElementById('successMsg').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function handleSubmissionError(msg) {
-            setSubmittingState(false);
-            alert('Peringatan: ' + msg);
-        }
-
-        function resetFormHandler() {
-            if (confirm('Apakah Anda yakin ingin mengosongkan seluruh isian formulir?')) {
-                form.reset();
-                clearSignature();
-                toggleSections();
-            }
-        }
-
-        function resetToNewForm() {
-            form.reset();
-            clearSignature();
-            toggleSections();
-            document.getElementById('successMsg').classList.add('hidden');
-            form.style.display = 'block';
-            
-            // Set ulang tanggal & jam saat ini
-            const today = new Date();
-            const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const dd = String(today.getDate()).padStart(2, '0');
-            const hh = String(today.getHours()).padStart(2, '0');
-            const min = String(today.getMinutes()).padStart(2, '0');
-            document.getElementById('inputTanggal').value = `${yyyy}-${mm}-${dd}`;
-            document.getElementById('inputWaktu').value = `${hh}:${min}`;
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    </script>
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
 </body>
 </html>
